@@ -16,7 +16,7 @@ public class Connectionz {
     public static Connection getConnection(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc.mysql://localhost:3306/comlibsys","root","12345");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/comlibsys","root","12345");
             
         } catch (Exception ex) {
             System.out.println(""+ex);

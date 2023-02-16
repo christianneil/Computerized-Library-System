@@ -4,6 +4,11 @@
  */
 package library.management.newn;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author opall
@@ -13,6 +18,10 @@ public class LoginFormCLS extends javax.swing.JFrame {
     /**
      * Creates new form LoginFormCLS
      */
+    Connection con;
+    PreparedStatement pst;
+    ResultSet rs;
+    
     public LoginFormCLS() {
         initComponents();
     }
@@ -35,7 +44,7 @@ public class LoginFormCLS extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txt_username = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1_selectuser = new javax.swing.JComboBox<>();
         jButton2_login = new javax.swing.JButton();
         txt_password = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
@@ -109,16 +118,16 @@ public class LoginFormCLS extends javax.swing.JFrame {
         jLabel3.setText("Username");
         jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, -1, 31));
 
-        jComboBox1.setFont(new java.awt.Font("Leelawadee UI", 0, 14)); // NOI18N
-        jComboBox1.setForeground(new java.awt.Color(114, 0, 0));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Librarian" }));
-        jComboBox1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jComboBox1_selectuser.setFont(new java.awt.Font("Leelawadee UI", 0, 14)); // NOI18N
+        jComboBox1_selectuser.setForeground(new java.awt.Color(114, 0, 0));
+        jComboBox1_selectuser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Librarian" }));
+        jComboBox1_selectuser.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jComboBox1_selectuser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jComboBox1_selectuser_selectuserActionPerformed(evt);
             }
         });
-        jPanel3.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 450, 166, -1));
+        jPanel3.add(jComboBox1_selectuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 450, 166, -1));
 
         jButton2_login.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton2_login.setForeground(new java.awt.Color(114, 0, 0));
@@ -173,9 +182,9 @@ public class LoginFormCLS extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void jComboBox1_selectuser_selectuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1_selectuser_selectuserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_jComboBox1_selectuser_selectuserActionPerformed
 
     private void jCheckBox1_showhidepassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1_showhidepassActionPerformed
         // login button code
@@ -190,6 +199,40 @@ public class LoginFormCLS extends javax.swing.JFrame {
         // TODO add your handling code here:
         String username=txt_username.getText();
         String password=txt_password.getText(); 
+        String option=jComboBox1_selectuser.getSelectedItem().toString();
+        
+        if (username.equals("") || password.equals("") || option.equals("")) {
+            JOptionPane.showMessageDialog(rootPane,"Some Fields Are Empty", "Error",1);
+        } else {
+            try {
+                con=Connectionz.getConnection();
+                pst=con.prepareStatement("select * from login_table where username=? and password=?");
+                pst.setString(1, username);
+                pst.setString(2, password);
+                rs=pst.executeQuery();
+                
+                if (rs.next()) {
+                    String s1=rs.getString("option");
+                    String un=rs.getString("username");
+                    if (option.equalsIgnoreCase("Admin") && s1.equalsIgnoreCase("Admin")) {
+                        AdminMenu ad=new AdminMenu(un);
+                        ad.setVisible(true);
+                        setVisible(false);
+                    }
+                    if (option.equalsIgnoreCase("Librarian") && s1.equalsIgnoreCase("Librarian")) {
+                        LibrarianDashboard ld=new LibrarianDashboard(un);
+                        ld.setVisible(true);
+                        setVisible(false);
+                    }
+                    
+                } else {
+                    JOptionPane.showMessageDialog(rootPane,"Username or Password Not Matched" , "Login Error",1);
+                }
+                
+            } catch (Exception ex) {
+                System.out.println(""+ex);
+            }
+        }
         
     }//GEN-LAST:event_jButton2_loginActionPerformed
 
@@ -231,7 +274,7 @@ public class LoginFormCLS extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2_login;
     private javax.swing.JCheckBox jCheckBox1_showhidepass;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox1_selectuser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

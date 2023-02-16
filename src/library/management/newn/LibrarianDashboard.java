@@ -16,6 +16,10 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     public LibrarianDashboard() {
         initComponents();
     }
+     public LibrarianDashboard(String username) {
+        initComponents();
+        LibrarianNameDisplay.setText(username);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -48,8 +52,9 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel21 = new javax.swing.JLabel();
+        LibrarianNameDisplay = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -200,15 +205,19 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(494, 33));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel21.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel21.setText("Welcome :");
-        jPanel3.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 30, 230, 20));
+        LibrarianNameDisplay.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        LibrarianNameDisplay.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel3.add(LibrarianNameDisplay, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 30, 90, 20));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(242, 242, 242));
         jLabel4.setText("Dashboard");
         jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 30));
+
+        jLabel22.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel22.setText("Welcome :");
+        jPanel3.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 30, 90, 20));
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 0, 1120, 50));
 
@@ -256,6 +265,7 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel LibrarianNameDisplay;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -265,7 +275,7 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel9;
