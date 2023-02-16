@@ -178,7 +178,7 @@ public class LoginFormCLS extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jCheckBox1_showhidepassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1_showhidepassActionPerformed
-        // TODO add your handling code here:
+        // login button code
         if (jCheckBox1_showhidepass.isSelected()) {
             txt_password.setEchoChar((char)0); //password = JPasswordField
         } else {
