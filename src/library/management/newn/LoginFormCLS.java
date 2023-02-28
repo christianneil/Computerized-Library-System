@@ -25,6 +25,65 @@ public class LoginFormCLS extends javax.swing.JFrame {
     public LoginFormCLS() {
         initComponents();
     }
+    public void checkLoginDetails(){
+        String username=txt_username.getText();
+        String password=txt_password.getText(); 
+        String options=jComboBox1_selectuser.getSelectedItem().toString();
+        
+        if (username.equals("") || password.equals("") || options.equals("")) {
+            JOptionPane.showMessageDialog(rootPane,"Some Fields Are Empty", "Error",1);
+        } else {
+            try {
+                con=Connectionz.getConnection();
+                String sql="select * from adminlogin_table where username=? and password=?";
+                pst=con.prepareStatement(sql);
+                pst.setString(1, username);
+                pst.setString(2, password);
+                rs=pst.executeQuery();
+                
+                if (rs.next()) {
+                    String s1=rs.getString("options");
+                    String un=rs.getString("username");
+                    if (options.equalsIgnoreCase("Admin") && s1.equalsIgnoreCase("Admin")) {
+                        JOptionPane.showMessageDialog(this, "Login Successful");
+                        AdminPanel ad=new AdminPanel();
+                        ad.setVisible(true);
+                        setVisible(true);
+                        this.dispose();
+                    }
+                    if (options.equalsIgnoreCase("Librarian") && s1.equalsIgnoreCase("Librarian")) {
+                        LibrarianDashboard ld=new LibrarianDashboard();
+                        ld.setVisible(true);
+                        setVisible(false);
+                        this.dispose();
+                    }
+                    
+                } else {
+                    JOptionPane.showMessageDialog(rootPane,"Incorrect Username or Password" , "Login Error",1);
+                }
+                
+            } catch (Exception ex) {
+                System.out.println(""+ex);
+            }
+        }
+    }
+    public boolean validateLogin(){
+       String username=txt_username.getText();
+       String password=txt_password.getText(); 
+        
+       
+        if (username.equals("")) {
+            JOptionPane.showMessageDialog(this, "Please enter Username");
+            return false;
+        }
+        
+        if (password.equals("")) {
+            JOptionPane.showMessageDialog(this, "Please enter Password");
+            return false;
+        }
+        
+        return true;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -197,42 +256,10 @@ public class LoginFormCLS extends javax.swing.JFrame {
 
     private void jButton2_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_loginActionPerformed
         // TODO add your handling code here:
-        String username=txt_username.getText();
-        String password=txt_password.getText(); 
-        String option=jComboBox1_selectuser.getSelectedItem().toString();
-        
-        if (username.equals("") || password.equals("") || option.equals("")) {
-            JOptionPane.showMessageDialog(rootPane,"Some Fields Are Empty", "Error",1);
-        } else {
-            try {
-                con=Connectionz.getConnection();
-                pst=con.prepareStatement("select * from login_table where username=? and password=?");
-                pst.setString(1, username);
-                pst.setString(2, password);
-                rs=pst.executeQuery();
-                
-                if (rs.next()) {
-                    String s1=rs.getString("option");
-                    String un=rs.getString("username");
-                    if (option.equalsIgnoreCase("Admin") && s1.equalsIgnoreCase("Admin")) {
-                        AdminMenu ad=new AdminMenu(un);
-                        ad.setVisible(true);
-                        setVisible(false);
-                    }
-                    if (option.equalsIgnoreCase("Librarian") && s1.equalsIgnoreCase("Librarian")) {
-                        LibrarianDashboard ld=new LibrarianDashboard(un);
-                        ld.setVisible(true);
-                        setVisible(false);
-                    }
-                    
-                } else {
-                    JOptionPane.showMessageDialog(rootPane,"Username or Password Not Matched" , "Login Error",1);
-                }
-                
-            } catch (Exception ex) {
-                System.out.println(""+ex);
-            }
+        if (validateLogin()==true) {
+            checkLoginDetails();
         }
+        
         
     }//GEN-LAST:event_jButton2_loginActionPerformed
 

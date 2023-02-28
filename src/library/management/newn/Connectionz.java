@@ -8,20 +8,20 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 /**
  *
- * @author opall
+ * @author Jose rizal
  */
 public class Connectionz {
-    static Connection con;
+    static Connection con=null;
     
     public static Connection getConnection(){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/comlibsys","root","12345");
-            
-        } catch (Exception ex) {
-            System.out.println(""+ex);
+            Class.forName("com.mysql.cj.jdbc.Driver"); 
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/computerized_libsys","root","Caredevsdatabase@333");            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return con;
+    
     }
     
 }
