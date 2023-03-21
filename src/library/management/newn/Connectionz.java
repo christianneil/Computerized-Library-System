@@ -16,7 +16,7 @@ public class Connectionz {
     public static Connection getConnection(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); 
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/computerized_libsys","root","Caredevsdatabase@333");            
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/compulibsys","root","");            
         } catch (Exception e) {
             e.printStackTrace();
         }

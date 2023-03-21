@@ -1,24 +1,105 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package library.management.newn;
 
-/**
- *
- * @author opall
- */
+import java.sql.SQLException;
+
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class LibrarianDashboard extends javax.swing.JFrame {
 
-    /**
-     * Creates new form LibrarianDashboard
-     */
+    private Connection con;
+    private PreparedStatement pst;
+    private ResultSet rs;
+
+    Color mouseExitColor = new Color(144, 0, 0);
+    Color mouseClickColor = new Color(96, 0, 0);
+    DefaultTableModel model;
+
+    /*private Color hoverBgColor = new Color(255, 255, 255); 
+    private Color hoverTextColor = new Color(144, 0, 63); 
+    private Color pressedBgColor = new Color(199, 0, 57); 
+    private Color releasedBgColor = new Color(144, 0, 63); */
     public LibrarianDashboard() {
         initComponents();
+        showBookDataToTable();
     }
-     public LibrarianDashboard(String username) {
+    
+    // This method fetches book data from the database table and displays it in a JTable
+    public void showBookDataToTable() {
+        
+        // Declare and initialize variables to store book data
+        String BookId = null;
+        String BookTitle = null;
+        String Author = null;
+        String Publisher = null;
+        String Category = null;
+        String Quantity = null;
+        String Status = null;
+        
+        //to select all data from the book_details table
+        String selectData = "SELECT * FROM book_details";
+        
+        // Creating a table model with rows that will be displayed on the CRUD table of librarians information
+        DefaultTableModel model = (DefaultTableModel) crud_tableDataOfBooks.getModel();
+        // Clear the table of any existing data
+        model.setRowCount(0);
+
+        try {
+            // Load the MySQL JDBC driver and establish a connection to the databas
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/compulibsys", "root", "");
+             // Create a prepared statement from the SQL statement to select data from the book_details table
+            pst = con.prepareStatement(selectData);
+            // Execute the SQL statement and get the result set
+            rs = pst.executeQuery();
+            
+             // Loop through the result set and retrieve book data
+            while (rs.next()) {
+
+                BookId = rs.getString("book_id");
+                BookTitle = rs.getString("book_title");
+                Author = rs.getString("author");
+                Publisher = rs.getString("publisher");
+                Category = rs.getString("category");
+                Quantity = rs.getString("quantity");
+                Status = rs.getString("status");
+                
+                // Create a string array with the retrieved book data
+                String rows[] = {BookId, BookTitle, Author, Publisher, Category, Quantity, Status};
+                 // Add the book data to the JTable model
+                model.addRow(rows);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * public void setBookToTable() {
+     *
+     *
+     * DefaultTableModel model = (DefaultTableModel)
+     * crud_tableDataOfBooks.getModel(); model.setRowCount(0);
+     *
+     * try { Class.forName("com.mysql.cj.jdbc.Driver"); con =
+     * DriverManager.getConnection("jdbc:mysql://localhost:3306/compulibsys",
+     * "root", ""); pst = con.prepareStatement(selectData); rs =
+     * pst.executeQuery(); } catch (Exception e) { }
+     *
+     * }
+     */
+    public LibrarianDashboard(String username) {
         initComponents();
         LibrarianNameDisplay.setText(username);
+
     }
 
     /**
@@ -31,12 +112,9 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -53,13 +131,53 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         LibrarianNameDisplay = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        Parent = new javax.swing.JPanel();
+        dashboardCardLayout = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jPanel17 = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        listOfIssuedBooksCardLayout = new javax.swing.JPanel();
+        bookTransactionCardLayout = new javax.swing.JPanel();
+        memberMaintenanceCardLayout = new javax.swing.JPanel();
+        bookMaintenanceCardLayout = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        txt_author = new javax.swing.JTextField();
+        txt_booktitle = new javax.swing.JTextField();
+        txt_category = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jComboBox_statusBook = new javax.swing.JComboBox<>();
+        crud_addBtn = new rojerusan.RSMaterialButtonRectangle();
+        crud_updateBtn = new rojerusan.RSMaterialButtonRectangle();
+        crud_deleteBtn = new rojerusan.RSMaterialButtonRectangle();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        crud_tableDataOfBooks = new rojerusan.RSTableMetro();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        txt_quantity = new javax.swing.JTextField();
+        txt_publisher = new javax.swing.JTextField();
+        crud_clearBtn = new rojerusan.RSMaterialButtonRectangle();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -67,39 +185,37 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(144, 0, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel4.setBackground(new java.awt.Color(144, 0, 0));
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/library/management/newn/iconsforLibrarianSideMenu/icons8-categorize-24.png"))); // NOI18N
-        jLabel13.setText(" Categories");
-        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 140, 30));
-
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 250, 30));
-
         jPanel12.setBackground(new java.awt.Color(144, 0, 0));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/library/management/newn/iconsforLibrarianSideMenu/icons8-books-24.png"))); // NOI18N
         jLabel17.setText(" List of Issued Books");
+        jLabel17.setToolTipText("");
+        jLabel17.setFocusable(false);
+        jLabel17.setIconTextGap(0);
+        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel17MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel17MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLabel17MouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel17)
-                .addContainerGap(34, Short.MAX_VALUE))
+            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 250, 40));
@@ -107,43 +223,58 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         jPanel13.setBackground(new java.awt.Color(144, 0, 0));
         jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText(" Book Transaction ");
-        jPanel13.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, -1, -1));
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/library/management/newn/iconsforLibrarianSideMenu/icons8-transaction-24.png"))); // NOI18N
         jLabel1.setText(" Book Transaction ");
-        jPanel13.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 30));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel1MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLabel1MouseReleased(evt);
+            }
+        });
+        jPanel13.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 40));
 
-        jPanel1.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 250, 30));
+        jPanel1.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 250, 40));
 
         jPanel16.setBackground(new java.awt.Color(144, 0, 0));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/library/management/newn/iconsforLibrarianSideMenu/icons8-dashboard-24.png"))); // NOI18N
         jLabel2.setText(" Dashboard");
+        jLabel2.setToolTipText("");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel2MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLabel2MouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
-                .addGap(0, 7, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 250, 40));
+        jPanel1.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 250, 50));
 
         jButton1.setText("LOG OUT");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -162,11 +293,23 @@ public class LibrarianDashboard extends javax.swing.JFrame {
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/library/management/newn/iconsforLibrarianSideMenu/icons8-add-book-24.png"))); // NOI18N
         jLabel14.setText(" Book Maintenance ");
-        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 30));
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel14MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLabel14MouseReleased(evt);
+            }
+        });
+        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 40));
 
-        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 250, 30));
+        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 250, 40));
 
         jSeparator1.setForeground(new java.awt.Color(241, 184, 20));
         jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 140, 10));
@@ -176,11 +319,23 @@ public class LibrarianDashboard extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/library/management/newn/iconsforLibrarianSideMenu/icons8-user-groups-24.png"))); // NOI18N
         jLabel10.setText(" Member Maintenance ");
-        jPanel7.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 30));
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel10MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLabel10MouseReleased(evt);
+            }
+        });
+        jPanel7.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 40));
 
-        jPanel1.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 250, 30));
+        jPanel1.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 250, 40));
 
         jLabel20.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
@@ -214,11 +369,6 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         LibrarianNameDisplay.setForeground(new java.awt.Color(255, 255, 255));
         jPanel3.add(LibrarianNameDisplay, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 30, 90, 20));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(242, 242, 242));
-        jLabel4.setText("Dashboard");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 30));
-
         jLabel22.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setText("Welcome :");
@@ -226,28 +376,15 @@ public class LibrarianDashboard extends javax.swing.JFrame {
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 0, 1120, 50));
 
-        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Parent.setBackground(new java.awt.Color(255, 255, 255));
+        Parent.setLayout(new java.awt.CardLayout());
 
-        jPanel9.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(241, 184, 20)));
-        jPanel9.setPreferredSize(new java.awt.Dimension(260, 1));
+        dashboardCardLayout.setBackground(new java.awt.Color(255, 255, 255));
+        dashboardCardLayout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 125, Short.MAX_VALUE)
-        );
-
-        jPanel8.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 70, 260, 140));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel5.setText("No Of Books");
-        jPanel8.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 220, 30));
+        jLabel11.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jLabel11.setText("Total Books");
+        dashboardCardLayout.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 220, 30));
 
         jPanel10.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(241, 184, 20)));
         jPanel10.setPreferredSize(new java.awt.Dimension(260, 1));
@@ -256,13 +393,19 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(102, 102, 102));
         jLabel6.setText("5");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI Black", 1, 50)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel7.setText("5");
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+            .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap(83, Short.MAX_VALUE)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33))
         );
         jPanel10Layout.setVerticalGroup(
@@ -270,20 +413,676 @@ public class LibrarianDashboard extends javax.swing.JFrame {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel8.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 260, 140));
+        dashboardCardLayout.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 100, 260, 140));
 
-        getContentPane().add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, 1120, 720));
+        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jLabel5.setText("Listed Categories");
+        dashboardCardLayout.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 60, 220, 30));
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(241, 184, 20)));
+        jPanel11.setPreferredSize(new java.awt.Dimension(260, 1));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 1, 50)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel8.setText("10");
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI Black", 1, 50)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel12.setText("5");
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap(83, Short.MAX_VALUE)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        dashboardCardLayout.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 260, 140));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel4.setText("Dashboard");
+        dashboardCardLayout.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 110, 30));
+
+        jLabel24.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jLabel24.setText("No. of Borrowers");
+        dashboardCardLayout.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 70, 300, 30));
+
+        jLabel25.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jLabel25.setText("No. of Available Books");
+        dashboardCardLayout.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 310, 30));
+
+        jPanel14.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(241, 184, 20)));
+        jPanel14.setPreferredSize(new java.awt.Dimension(260, 1));
+
+        jLabel26.setFont(new java.awt.Font("Segoe UI Black", 1, 50)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel26.setText("5");
+
+        jLabel27.setFont(new java.awt.Font("Segoe UI Black", 1, 50)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel27.setText("5");
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap(83, Short.MAX_VALUE)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        dashboardCardLayout.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 340, -1, 140));
+
+        jPanel15.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(241, 184, 20)));
+        jPanel15.setPreferredSize(new java.awt.Dimension(260, 1));
+
+        jLabel28.setFont(new java.awt.Font("Segoe UI Black", 1, 50)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel28.setText("5");
+
+        jLabel29.setFont(new java.awt.Font("Segoe UI Black", 1, 50)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel29.setText("5");
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap(83, Short.MAX_VALUE)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel29, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        dashboardCardLayout.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 340, -1, 140));
+
+        jLabel30.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jLabel30.setText("No. of Issued Books");
+        dashboardCardLayout.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 220, 30));
+
+        jPanel17.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(241, 184, 20)));
+        jPanel17.setPreferredSize(new java.awt.Dimension(260, 1));
+
+        jLabel31.setFont(new java.awt.Font("Segoe UI Black", 1, 50)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel31.setText("5");
+
+        jLabel32.setFont(new java.awt.Font("Segoe UI Black", 1, 50)); // NOI18N
+        jLabel32.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel32.setText("5");
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap(83, Short.MAX_VALUE)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        dashboardCardLayout.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 100, -1, 140));
+
+        Parent.add(dashboardCardLayout, "card2");
+
+        listOfIssuedBooksCardLayout.setBackground(new java.awt.Color(255, 102, 102));
+
+        javax.swing.GroupLayout listOfIssuedBooksCardLayoutLayout = new javax.swing.GroupLayout(listOfIssuedBooksCardLayout);
+        listOfIssuedBooksCardLayout.setLayout(listOfIssuedBooksCardLayoutLayout);
+        listOfIssuedBooksCardLayoutLayout.setHorizontalGroup(
+            listOfIssuedBooksCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1120, Short.MAX_VALUE)
+        );
+        listOfIssuedBooksCardLayoutLayout.setVerticalGroup(
+            listOfIssuedBooksCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 720, Short.MAX_VALUE)
+        );
+
+        Parent.add(listOfIssuedBooksCardLayout, "card3");
+
+        javax.swing.GroupLayout bookTransactionCardLayoutLayout = new javax.swing.GroupLayout(bookTransactionCardLayout);
+        bookTransactionCardLayout.setLayout(bookTransactionCardLayoutLayout);
+        bookTransactionCardLayoutLayout.setHorizontalGroup(
+            bookTransactionCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1120, Short.MAX_VALUE)
+        );
+        bookTransactionCardLayoutLayout.setVerticalGroup(
+            bookTransactionCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 720, Short.MAX_VALUE)
+        );
+
+        Parent.add(bookTransactionCardLayout, "card4");
+
+        javax.swing.GroupLayout memberMaintenanceCardLayoutLayout = new javax.swing.GroupLayout(memberMaintenanceCardLayout);
+        memberMaintenanceCardLayout.setLayout(memberMaintenanceCardLayoutLayout);
+        memberMaintenanceCardLayoutLayout.setHorizontalGroup(
+            memberMaintenanceCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1120, Short.MAX_VALUE)
+        );
+        memberMaintenanceCardLayoutLayout.setVerticalGroup(
+            memberMaintenanceCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 720, Short.MAX_VALUE)
+        );
+
+        Parent.add(memberMaintenanceCardLayout, "card5");
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel9.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel9.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel9.setText("Status");
+        jPanel8.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, -1, 31));
+
+        txt_author.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_author.setSelectionStart(2);
+        txt_author.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_authorActionPerformed(evt);
+            }
+        });
+        jPanel8.add(txt_author, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 330, 30));
+
+        txt_booktitle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle.setSelectionStart(2);
+        txt_booktitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitleActionPerformed(evt);
+            }
+        });
+        jPanel8.add(txt_booktitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 330, 30));
+
+        txt_category.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_category.setSelectionStart(2);
+        txt_category.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_categoryActionPerformed(evt);
+            }
+        });
+        jPanel8.add(txt_category, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 330, 30));
+
+        jLabel15.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel15.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel15.setText("Book Title");
+        jPanel8.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, 31));
+
+        jLabel16.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel16.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel16.setText("Author");
+        jPanel8.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, 20));
+
+        jLabel18.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel18.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel18.setText("Publisher");
+        jPanel8.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, 20));
+
+        jComboBox_statusBook.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Available", "Not Available" }));
+        jComboBox_statusBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_statusBookActionPerformed(evt);
+            }
+        });
+        jPanel8.add(jComboBox_statusBook, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 310, 40));
+
+        crud_addBtn.setBackground(new java.awt.Color(0, 0, 144));
+        crud_addBtn.setText("add");
+        crud_addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_addBtnActionPerformed(evt);
+            }
+        });
+        jPanel8.add(crud_addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 310, 40));
+
+        crud_updateBtn.setBackground(new java.awt.Color(0, 0, 144));
+        crud_updateBtn.setText("UPDATE");
+        crud_updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_updateBtnActionPerformed(evt);
+            }
+        });
+        jPanel8.add(crud_updateBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 500, 310, 40));
+
+        crud_deleteBtn.setBackground(new java.awt.Color(0, 0, 144));
+        crud_deleteBtn.setText("DELETE");
+        crud_deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_deleteBtnActionPerformed(evt);
+            }
+        });
+        jPanel8.add(crud_deleteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 310, 40));
+
+        crud_tableDataOfBooks.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Book Title", "Author", "Publisher", "Category", "Quantity", "Status"
+            }
+        ));
+        crud_tableDataOfBooks.setColorBackgoundHead(new java.awt.Color(241, 184, 20));
+        crud_tableDataOfBooks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                crud_tableDataOfBooksMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(crud_tableDataOfBooks);
+
+        jPanel8.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 630, 450));
+
+        jLabel21.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel21.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel21.setText("Quantity");
+        jPanel8.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
+
+        jLabel23.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel23.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel23.setText("Category");
+        jPanel8.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, -1, 20));
+
+        txt_quantity.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_quantity.setSelectionStart(2);
+        txt_quantity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_quantityActionPerformed(evt);
+            }
+        });
+        jPanel8.add(txt_quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 330, 30));
+
+        txt_publisher.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_publisher.setSelectionStart(2);
+        txt_publisher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_publisherActionPerformed(evt);
+            }
+        });
+        jPanel8.add(txt_publisher, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 330, 30));
+
+        crud_clearBtn.setBackground(new java.awt.Color(0, 0, 144));
+        crud_clearBtn.setText("CLEAR");
+        crud_clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_clearBtnActionPerformed(evt);
+            }
+        });
+        jPanel8.add(crud_clearBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 540, 310, 40));
+
+        javax.swing.GroupLayout bookMaintenanceCardLayoutLayout = new javax.swing.GroupLayout(bookMaintenanceCardLayout);
+        bookMaintenanceCardLayout.setLayout(bookMaintenanceCardLayoutLayout);
+        bookMaintenanceCardLayoutLayout.setHorizontalGroup(
+            bookMaintenanceCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bookMaintenanceCardLayoutLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+        bookMaintenanceCardLayoutLayout.setVerticalGroup(
+            bookMaintenanceCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bookMaintenanceCardLayoutLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
+                .addGap(29, 29, 29))
+        );
+
+        Parent.add(bookMaintenanceCardLayout, "card6");
+
+        getContentPane().add(Parent, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, 1120, 720));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Confirmation Message", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (option == JOptionPane.YES_OPTION) {
+            LoginFormCLS logForm = new LoginFormCLS();
+            logForm.setFocusable(true);
+            logForm.show();
+
+            dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
+        jPanel16.setBackground(mouseClickColor);
+    }//GEN-LAST:event_jLabel2MousePressed
+
+    private void jLabel2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseReleased
+        jPanel16.setBackground(mouseExitColor);
+    }//GEN-LAST:event_jLabel2MouseReleased
+
+    private void jLabel17MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MousePressed
+        jPanel12.setBackground(mouseClickColor);
+    }//GEN-LAST:event_jLabel17MousePressed
+
+    private void jLabel17MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseReleased
+        jPanel12.setBackground(mouseExitColor);
+    }//GEN-LAST:event_jLabel17MouseReleased
+
+    private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
+        jPanel13.setBackground(mouseClickColor);
+    }//GEN-LAST:event_jLabel1MousePressed
+
+    private void jLabel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseReleased
+        jPanel13.setBackground(mouseExitColor);
+    }//GEN-LAST:event_jLabel1MouseReleased
+
+    private void jLabel10MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MousePressed
+        jPanel7.setBackground(mouseClickColor);
+    }//GEN-LAST:event_jLabel10MousePressed
+
+    private void jLabel10MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseReleased
+        jPanel7.setBackground(mouseExitColor);
+    }//GEN-LAST:event_jLabel10MouseReleased
+
+    private void jLabel14MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MousePressed
+        jPanel6.setBackground(mouseClickColor);
+    }//GEN-LAST:event_jLabel14MousePressed
+
+    private void jLabel14MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseReleased
+        jPanel6.setBackground(mouseExitColor);
+    }//GEN-LAST:event_jLabel14MouseReleased
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        Parent.removeAll();
+        Parent.add(dashboardCardLayout);
+        Parent.repaint();
+        Parent.revalidate();
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
+        Parent.removeAll();
+        Parent.add(listOfIssuedBooksCardLayout);
+        Parent.repaint();
+        Parent.revalidate();
+    }//GEN-LAST:event_jLabel17MouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        Parent.removeAll();
+        Parent.add(bookTransactionCardLayout);
+        Parent.repaint();
+        Parent.revalidate();
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+        Parent.removeAll();
+        Parent.add(memberMaintenanceCardLayout);
+        Parent.repaint();
+        Parent.revalidate();
+    }//GEN-LAST:event_jLabel10MouseClicked
+
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        Parent.removeAll();
+        Parent.add(bookMaintenanceCardLayout);
+        Parent.repaint();
+        Parent.revalidate();
+    }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void txt_authorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_authorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_authorActionPerformed
+
+    private void txt_booktitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitleActionPerformed
+
+    private void txt_categoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_categoryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_categoryActionPerformed
+
+    private void txt_quantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_quantityActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_quantityActionPerformed
+
+    private void jComboBox_statusBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_statusBookActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_statusBookActionPerformed
+
+    private void txt_publisherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_publisherActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_publisherActionPerformed
+
+    private void crud_clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_clearBtnActionPerformed
+        clearFields();
+    }//GEN-LAST:event_crud_clearBtnActionPerformed
+
+    private void crud_addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_addBtnActionPerformed
+        // Display the current book data in the JTable
+        showBookDataToTable();
+        
+        // SQL statement to get the maximum book ID from the book_details table
+        String getMaxId = "SELECT MAX(book_id) FROM book_details";
+        // SQL statement to insert book data into the book_details table
+        String insertData = "INSERT INTO book_details (book_id, book_title, author, publisher, category, quantity, status) VALUES (?,?,?,?,?,?,?)";
+        
+        // Get a connection to the database
+        con = Connectionz.getConnection();
+
+        try {
+            // Check if all necessary fields have been filled out, otherwise show an error message
+            if (txt_booktitle.getText().isEmpty() || txt_author.getText().isEmpty() || txt_publisher.getText().isEmpty() || txt_category.getText().isEmpty() || txt_quantity.getText().isEmpty() || jComboBox_statusBook.getSelectedItem() == null) {
+                if (!txt_booktitle.hasFocus() || !txt_author.hasFocus() || !txt_publisher.hasFocus() || !txt_category.hasFocus() || !txt_quantity.hasFocus() || !jComboBox_statusBook.hasFocus()) {
+                    JOptionPane.showMessageDialog(this, "Please fill out all necessary information", "Error Message", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                // Validate if the input for quantity is a number
+                int quantity = 0;
+                try {
+                    quantity = Integer.parseInt(txt_quantity.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Quantity must be a number", "Error Message", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                // Get the maximum book ID from the database and increment it by 1 to generate a new, unique ID for the book being added
+                pst = con.prepareStatement(getMaxId);
+                ResultSet rs = pst.executeQuery();
+                int maxId = rs.next() ? rs.getInt(1) : 0; // If there are no existing book IDs, use the default value of 0 as the maximum
+                int newId = maxId + 1;
+                
+                // Insert the book data into the book_details table
+                pst = con.prepareStatement(insertData);
+                pst.setInt(1, newId);
+                pst.setString(2, txt_booktitle.getText());
+                pst.setString(3, txt_author.getText());
+                pst.setString(4, txt_publisher.getText());
+                pst.setString(5, txt_category.getText());
+                pst.setString(6, txt_quantity.getText());
+                pst.setString(7, (String) jComboBox_statusBook.getSelectedItem());
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Successfully Added", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+
+                // Update the JTable to show the newly added book data
+                showBookDataToTable();
+
+                // CLEAR FIELDS
+                clearFields();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_crud_addBtnActionPerformed
+
+    private void crud_updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_updateBtnActionPerformed
+        // When the Update button is clicked, prepare the SQL statement with the new data
+        String updateData = "UPDATE book_details SET book_title='"
+                + txt_booktitle.getText() + "', author='"
+                + txt_author.getText() + "', publisher='"
+                + txt_publisher.getText() + "', category='"
+                + txt_category.getText() + "', quantity='"
+                + txt_quantity.getText() + "', status='"
+                + jComboBox_statusBook.getSelectedItem() + "' WHERE book_id=" + idN;
+
+        con = Connectionz.getConnection();
+
+        try {
+             // Check if all necessary fields are filled
+            if (txt_booktitle.getText().isEmpty() || txt_author.getText().isEmpty() || txt_publisher.getText().isEmpty() || txt_category.getText().isEmpty() || txt_quantity.getText().isEmpty() || jComboBox_statusBook.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(this, "Please select a row first", "Error Message", JOptionPane.ERROR_MESSAGE);
+            } else {
+                 // Check if quantity is a number
+                String quantityStr = txt_quantity.getText().trim();
+                if (!quantityStr.matches("\\d+")) {
+                    JOptionPane.showMessageDialog(this, "Quantity must be a number", "Error Message", JOptionPane.ERROR_MESSAGE);
+                } else {
+                     // Confirm with user if they want to update data
+                    int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to UPDATE? ", "Confirmation Message", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                    if (option == JOptionPane.YES_OPTION) {
+                        pst = con.prepareStatement(updateData);
+                        pst.executeUpdate();
+
+                        JOptionPane.showMessageDialog(this, "Successfully Added", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+
+                        //TO SHOW UPDATED DATA
+                        showBookDataToTable();
+
+                        //CLEAR FIELDS
+                        clearFields();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Cancelled update!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_crud_updateBtnActionPerformed
+
+    private int idN = 0;// Initialize a variable to store the ID of the selected book
+    private void crud_tableDataOfBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crud_tableDataOfBooksMouseClicked
+        DefaultTableModel model = (DefaultTableModel) crud_tableDataOfBooks.getModel();
+        int index = crud_tableDataOfBooks.getSelectedRow();
+
+        // Get the ID of the selected book
+        idN = Integer.valueOf(model.getValueAt(index, 0).toString());
+
+        txt_booktitle.setText(model.getValueAt(index, 1).toString());
+        txt_author.setText(model.getValueAt(index, 2).toString());
+        txt_publisher.setText(model.getValueAt(index, 3).toString());
+        txt_category.setText(model.getValueAt(index, 4).toString());
+        txt_quantity.setText(model.getValueAt(index, 5).toString());
+        jComboBox_statusBook.setSelectedItem(model.getValueAt(index, 6).toString());
+    }//GEN-LAST:event_crud_tableDataOfBooksMouseClicked
+
+    private void crud_deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_deleteBtnActionPerformed
+        // SQL command to delete the book data with the corresponding id number
+        String deleteData = "DELETE FROM book_details WHERE book_id=" + String.valueOf(idN);
+        // SQL command to update the book id numbers for the remaining records
+        String updateIds = "UPDATE book_details SET book_id = book_id - 1 WHERE book_id > ?";
+
+        try {
+            if (txt_booktitle.getText().isEmpty() || txt_author.getText().isEmpty() || txt_publisher.getText().isEmpty() || txt_category.getText().isEmpty() || txt_quantity.getText().isEmpty() || jComboBox_statusBook.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(this, "Please select a row first", "Error Message", JOptionPane.ERROR_MESSAGE);
+            } else {
+                int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to DELETE? ", "Confirmation Message", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                if (option == JOptionPane.YES_OPTION) {
+                    con = Connectionz.getConnection();
+                    pst = con.prepareStatement(deleteData);
+                    pst.executeUpdate();
+                    pst.close();
+
+                    pst = con.prepareStatement(updateIds);
+                    pst.setInt(1, idN);
+                    pst.executeUpdate();
+                    pst.close();
+
+                    JOptionPane.showMessageDialog(this, "Successfully Deleted", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+
+                    //TO SHOW UPDATED DATA
+                    showBookDataToTable();
+
+                    //CLEAR FIELDS
+                    clearFields();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Cancelled deletion!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // This block of code is executed regardless of whether an exception was thrown or not.
+             // It is used to ensure that database resources (in this case, the PreparedStatement and Connection objects) are properly closed.
+            try {
+                 // Check if the PreparedStatement object is not null
+                if (pst != null) {
+                    // If it's not null, close it to release any database resources it may be holding
+                    pst.close();
+                }
+                // Check if the Connection object is not null
+                if (con != null) {
+                     // If it's not null, close it to release any database resources it may be holding
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_crud_deleteBtnActionPerformed
+
+    public void clearFields() {
+        txt_booktitle.setText("");
+        txt_author.setText("");
+        txt_publisher.setText("");
+        txt_category.setText("");
+        txt_quantity.setText("");
+        jComboBox_statusBook.setSelectedItem(null);
+
+    }
 
     /**
      * @param args the command line arguments
@@ -322,34 +1121,71 @@ public class LibrarianDashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LibrarianNameDisplay;
+    private javax.swing.JPanel Parent;
+    private javax.swing.JPanel bookMaintenanceCardLayout;
+    private javax.swing.JPanel bookTransactionCardLayout;
+    private rojerusan.RSMaterialButtonRectangle crud_addBtn;
+    private rojerusan.RSMaterialButtonRectangle crud_clearBtn;
+    private rojerusan.RSMaterialButtonRectangle crud_deleteBtn;
+    private rojerusan.RSTableMetro crud_tableDataOfBooks;
+    private rojerusan.RSMaterialButtonRectangle crud_updateBtn;
+    private javax.swing.JPanel dashboardCardLayout;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox_statusBook;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel listOfIssuedBooksCardLayout;
+    private javax.swing.JPanel memberMaintenanceCardLayout;
+    private javax.swing.JTextField txt_author;
+    private javax.swing.JTextField txt_booktitle;
+    private javax.swing.JTextField txt_category;
+    private javax.swing.JTextField txt_publisher;
+    private javax.swing.JTextField txt_quantity;
     // End of variables declaration//GEN-END:variables
 }

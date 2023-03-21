@@ -21,67 +21,72 @@ public class LoginFormCLS extends javax.swing.JFrame {
     Connection con;
     PreparedStatement pst;
     ResultSet rs;
-    
+
     public LoginFormCLS() {
         initComponents();
     }
-    public void checkLoginDetails(){
-        String username=txt_username.getText();
-        String password=txt_password.getText(); 
-        String options=jComboBox1_selectuser.getSelectedItem().toString();
-        
-        if (username.equals("") || password.equals("") || options.equals("")) {
-            JOptionPane.showMessageDialog(rootPane,"Some Fields Are Empty", "Error",1);
-        } else {
-            try {
-                con=Connectionz.getConnection();
-                String sql="select * from adminlogin_table where username=? and password=?";
-                pst=con.prepareStatement(sql);
-                pst.setString(1, username);
-                pst.setString(2, password);
-                rs=pst.executeQuery();
-                
-                if (rs.next()) {
-                    String s1=rs.getString("options");
-                    String un=rs.getString("username");
-                    if (options.equalsIgnoreCase("Admin") && s1.equalsIgnoreCase("Admin")) {
-                        JOptionPane.showMessageDialog(this, "Login Successful");
-                        AdminPanel ad=new AdminPanel();
-                        ad.setVisible(true);
-                        setVisible(true);
-                        this.dispose();
-                    }
-                    if (options.equalsIgnoreCase("Librarian") && s1.equalsIgnoreCase("Librarian")) {
-                        LibrarianDashboard ld=new LibrarianDashboard();
-                        ld.setVisible(true);
-                        setVisible(false);
-                        this.dispose();
-                    }
-                    
-                } else {
-                    JOptionPane.showMessageDialog(rootPane,"Incorrect Username or Password" , "Login Error",1);
-                }
-                
-            } catch (Exception ex) {
-                System.out.println(""+ex);
+
+    public void checkLoginDetails() {
+        // Get the username, password, and user type selected by the user
+        String username = txt_username.getText();
+        String password = txt_password.getText();
+        String options = jComboBox1_selectuser.getSelectedItem().toString();
+
+        try {
+            // Establish a database connection
+            con = Connectionz.getConnection();
+            String sql = "";
+            
+            // Check if the user is an admin or a librarian and execute the corresponding SQL query
+            if (options.equalsIgnoreCase("Admin")) {
+                sql = "select * from adminlogin_table where username=? and password=?";
+            } else if (options.equalsIgnoreCase("Librarian")) {
+                sql = "select * from librarianlogin_table where (username=? and password=?)AND (options='Librarian')";
             }
+
+            pst = con.prepareStatement(sql);
+            pst.setString(1, username);
+            pst.setString(2, password);
+            rs = pst.executeQuery();
+            
+            // If the query returns a result, open the corresponding dashboard
+            if (rs.next()) {
+                String s1 = rs.getString("options");
+                if (options.equalsIgnoreCase("Admin") && s1.equalsIgnoreCase("Admin")) {
+                    AdminPanel ad = new AdminPanel();
+                    ad.setExtendedState(MAXIMIZED_BOTH);
+                    ad.setVisible(true);
+                    this.dispose();
+                }
+                if (options.equalsIgnoreCase("Librarian") && s1.equalsIgnoreCase("Librarian")) {
+                    LibrarianDashboard ld = new LibrarianDashboard();
+                    ld.setExtendedState(MAXIMIZED_BOTH);
+                    ld.setVisible(true);
+                    this.dispose();
+                }
+            } else {// If the query returns no result, display an error message
+                JOptionPane.showMessageDialog(rootPane, "Incorrect Username or Password", "Login Error", 1);
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
         }
     }
-    public boolean validateLogin(){
-       String username=txt_username.getText();
-       String password=txt_password.getText(); 
-        
-       
+
+    public boolean validateLogin() {
+        String username = txt_username.getText();
+        String password = txt_password.getText();
+
         if (username.equals("")) {
             JOptionPane.showMessageDialog(this, "Please enter Username");
             return false;
         }
-        
+
         if (password.equals("")) {
             JOptionPane.showMessageDialog(this, "Please enter Password");
             return false;
         }
-        
+
         return true;
     }
 
@@ -104,7 +109,6 @@ public class LoginFormCLS extends javax.swing.JFrame {
         txt_username = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jComboBox1_selectuser = new javax.swing.JComboBox<>();
-        jButton2_login = new javax.swing.JButton();
         txt_password = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -112,6 +116,7 @@ public class LoginFormCLS extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jCheckBox1_showhidepass = new javax.swing.JCheckBox();
+        loginButton = new rojerusan.RSButtonMetro();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -188,18 +193,6 @@ public class LoginFormCLS extends javax.swing.JFrame {
         });
         jPanel3.add(jComboBox1_selectuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 450, 166, -1));
 
-        jButton2_login.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton2_login.setForeground(new java.awt.Color(114, 0, 0));
-        jButton2_login.setText("Login");
-        jButton2_login.setToolTipText("");
-        jButton2_login.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jButton2_login.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2_loginActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton2_login, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 530, 232, 40));
-
         txt_password.setBackground(new java.awt.Color(128, 0, 0));
         txt_password.setFont(new java.awt.Font("Leelawadee UI", 0, 14)); // NOI18N
         txt_password.setForeground(new java.awt.Color(255, 255, 255));
@@ -233,6 +226,19 @@ public class LoginFormCLS extends javax.swing.JFrame {
         });
         jPanel3.add(jCheckBox1_showhidepass, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, -1, -1));
 
+        loginButton.setBackground(new java.awt.Color(255, 255, 255));
+        loginButton.setForeground(new java.awt.Color(128, 0, 0));
+        loginButton.setText("Login");
+        loginButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        loginButton.setMaximumSize(new java.awt.Dimension(35, 19));
+        loginButton.setMinimumSize(new java.awt.Dimension(35, 19));
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginButtonActionPerformed(evt);
+            }
+        });
+        jPanel3.add(loginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 540, 232, 40));
+
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 10, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -248,20 +254,17 @@ public class LoginFormCLS extends javax.swing.JFrame {
     private void jCheckBox1_showhidepassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1_showhidepassActionPerformed
         // login button code
         if (jCheckBox1_showhidepass.isSelected()) {
-            txt_password.setEchoChar((char)0); //password = JPasswordField
+            txt_password.setEchoChar((char) 0); //
         } else {
-           txt_password.setEchoChar('*');
+            txt_password.setEchoChar('*');
         }
     }//GEN-LAST:event_jCheckBox1_showhidepassActionPerformed
 
-    private void jButton2_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2_loginActionPerformed
-        // TODO add your handling code here:
-        if (validateLogin()==true) {
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        if (validateLogin() == true) {
             checkLoginDetails();
         }
-        
-        
-    }//GEN-LAST:event_jButton2_loginActionPerformed
+    }//GEN-LAST:event_loginButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -299,7 +302,6 @@ public class LoginFormCLS extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2_login;
     private javax.swing.JCheckBox jCheckBox1_showhidepass;
     private javax.swing.JComboBox<String> jComboBox1_selectuser;
     private javax.swing.JLabel jLabel1;
@@ -315,6 +317,7 @@ public class LoginFormCLS extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
+    private rojerusan.RSButtonMetro loginButton;
     private javax.swing.JPasswordField txt_password;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
