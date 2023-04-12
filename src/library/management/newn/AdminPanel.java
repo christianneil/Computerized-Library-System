@@ -215,7 +215,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel1.setText("Manage Librarians");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 160, 40));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 170, 40));
         jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, 430, 10));
         jPanel2.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 430, 20));
 
@@ -329,6 +329,7 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         ));
         crud_tableDataOfLibrarians.setColorBackgoundHead(new java.awt.Color(241, 184, 20));
+        crud_tableDataOfLibrarians.setFuenteHead(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         crud_tableDataOfLibrarians.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 crud_tableDataOfLibrariansMouseClicked(evt);

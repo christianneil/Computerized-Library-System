@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,11 +28,12 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     public LibrarianDashboard() {
         initComponents();
         showBookDataToTable();
+        showMemberDataToTable();
     }
-    
+
     // This method fetches book data from the database table and displays it in a JTable
     public void showBookDataToTable() {
-        
+
         // Declare and initialize variables to store book data
         String BookId = null;
         String BookTitle = null;
@@ -40,10 +42,10 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         String Category = null;
         String Quantity = null;
         String Status = null;
-        
+
         //to select all data from the book_details table
         String selectData = "SELECT * FROM book_details";
-        
+
         // Creating a table model with rows that will be displayed on the CRUD table of librarians information
         DefaultTableModel model = (DefaultTableModel) crud_tableDataOfBooks.getModel();
         // Clear the table of any existing data
@@ -53,12 +55,12 @@ public class LibrarianDashboard extends javax.swing.JFrame {
             // Load the MySQL JDBC driver and establish a connection to the databas
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/compulibsys", "root", "");
-             // Create a prepared statement from the SQL statement to select data from the book_details table
+            // Create a prepared statement from the SQL statement to select data from the book_details table
             pst = con.prepareStatement(selectData);
             // Execute the SQL statement and get the result set
             rs = pst.executeQuery();
-            
-             // Loop through the result set and retrieve book data
+
+            // Loop through the result set and retrieve book data
             while (rs.next()) {
 
                 BookId = rs.getString("book_id");
@@ -68,10 +70,70 @@ public class LibrarianDashboard extends javax.swing.JFrame {
                 Category = rs.getString("category");
                 Quantity = rs.getString("quantity");
                 Status = rs.getString("status");
-                
+
                 // Create a string array with the retrieved book data
                 String rows[] = {BookId, BookTitle, Author, Publisher, Category, Quantity, Status};
-                 // Add the book data to the JTable model
+                // Add the book data to the JTable model
+                model.addRow(rows);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void showMemberDataToTable() {
+
+        // Declare and initialize variables to store member data
+        String Id = null;
+        String FirstName = null;
+        String MiddleName = null;
+        String LastName = null;
+        String Section = null;
+        String SchoolYear = null;
+        String Contact = null;
+        String Gender = null;
+        String MemberType = null;
+        String GradeLevel = null;
+        String Strand = null;
+
+        //to select all data from the book_details table
+        String selectData = "SELECT * FROM memberinfo_table";
+
+        // Creating a table model with rows that will be displayed on the CRUD table of Members information
+        DefaultTableModel model = (DefaultTableModel) crud_tableDataOfmembers.getModel();
+        // Clear the table of any existing data
+        model.setRowCount(0);
+
+        try {
+            // Load the MySQL JDBC driver and establish a connection to the databas
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/compulibsys", "root", "");
+            // Create a prepared statement from the SQL statement to select data from the book_details table
+            pst = con.prepareStatement(selectData);
+            // Execute the SQL statement and get the result set
+            rs = pst.executeQuery();
+
+            // Loop through the result set and retrieve book data
+            while (rs.next()) {
+
+                Id = rs.getString("member_id");
+                FirstName = rs.getString("first_name");
+                MiddleName = rs.getString("middle_name");
+                LastName = rs.getString("last_name");
+                Section = rs.getString("section");
+                SchoolYear = rs.getString("school_year");
+                Contact = rs.getString("contact");
+                Gender = rs.getString("gender");
+                MemberType = rs.getString("member_type");
+                GradeLevel = rs.getString("grade_level");
+                Strand = rs.getString("strand");
+
+                // Create a string array with the retrieved book data
+                String rows[] = {Id, FirstName, MiddleName, LastName, Section, SchoolYear, Contact, Gender, MemberType, GradeLevel, Strand};
+                // Add the book data to the JTable model
                 model.addRow(rows);
 
             }
@@ -111,6 +173,7 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        rSMetroTextPlaceHolderBeanInfo1 = new rojerusan.RSMetroTextPlaceHolderBeanInfo();
         jPanel1 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -157,7 +220,69 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         jLabel32 = new javax.swing.JLabel();
         listOfIssuedBooksCardLayout = new javax.swing.JPanel();
         bookTransactionCardLayout = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        txt_booktitle6 = new javax.swing.JTextField();
+        jLabel40 = new javax.swing.JLabel();
+        txt_booktitle7 = new javax.swing.JTextField();
+        jLabel38 = new javax.swing.JLabel();
+        txt_booktitle5 = new javax.swing.JTextField();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        jLabel42 = new javax.swing.JLabel();
+        jLabel43 = new javax.swing.JLabel();
+        txt_booktitle8 = new javax.swing.JTextField();
+        txt_booktitle9 = new javax.swing.JTextField();
+        jPanel9 = new javax.swing.JPanel();
+        txt_booktitle1 = new javax.swing.JTextField();
+        txt_booktitle2 = new javax.swing.JTextField();
+        txt_booktitle3 = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        txt_booktitle4 = new javax.swing.JTextField();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        jPanel19 = new javax.swing.JPanel();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel44 = new javax.swing.JLabel();
+        txt_booktitle10 = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        crud_tableDataOfBooks1 = new rojerusan.RSTableMetro();
+        jLabel45 = new javax.swing.JLabel();
+        txt_booktitle11 = new javax.swing.JTextField();
+        jLabel46 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
         memberMaintenanceCardLayout = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        crud_tableDataOfmembers = new rojerusan.RSTableMetro();
+        firstname_label = new javax.swing.JLabel();
+        txt_Memberfirstname = new javax.swing.JTextField();
+        middlename_label = new javax.swing.JLabel();
+        txt_Membermiddlename = new javax.swing.JTextField();
+        lastname_label = new javax.swing.JLabel();
+        txt_Memberlastname = new javax.swing.JTextField();
+        jComboBox_Membergender = new javax.swing.JComboBox<>();
+        membertype_label = new javax.swing.JLabel();
+        jComboBox_strand = new javax.swing.JComboBox<>();
+        gradelevel_label = new javax.swing.JLabel();
+        sectionstrand_label = new javax.swing.JLabel();
+        contact_label = new javax.swing.JLabel();
+        txt_Membercontact = new javax.swing.JTextField();
+        schoolyear_label = new javax.swing.JLabel();
+        txt_Membersection = new javax.swing.JTextField();
+        schoolyear_label1 = new javax.swing.JLabel();
+        jComboBox_gradelevel = new javax.swing.JComboBox<>();
+        jComboBox_membertype = new javax.swing.JComboBox<>();
+        gender_label2 = new javax.swing.JLabel();
+        formattedtxt_schoolyear = new javax.swing.JFormattedTextField();
+        crud_MemberAdd = new rojerusan.RSMaterialButtonRectangle();
+        crud_MemberupdateBtn = new rojerusan.RSMaterialButtonRectangle();
+        crud_MemberdeleteBtn = new rojerusan.RSMaterialButtonRectangle();
+        crud_MemberclearBtn = new rojerusan.RSMaterialButtonRectangle();
         bookMaintenanceCardLayout = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -594,29 +719,461 @@ public class LibrarianDashboard extends javax.swing.JFrame {
 
         Parent.add(listOfIssuedBooksCardLayout, "card3");
 
-        javax.swing.GroupLayout bookTransactionCardLayoutLayout = new javax.swing.GroupLayout(bookTransactionCardLayout);
-        bookTransactionCardLayout.setLayout(bookTransactionCardLayoutLayout);
-        bookTransactionCardLayoutLayout.setHorizontalGroup(
-            bookTransactionCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1120, Short.MAX_VALUE)
+        bookTransactionCardLayout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel4.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txt_booktitle6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle6.setSelectionStart(2);
+        txt_booktitle6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle6ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(txt_booktitle6, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 210, 30));
+
+        jLabel40.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel40.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jPanel4.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, 31));
+
+        txt_booktitle7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle7.setSelectionStart(2);
+        txt_booktitle7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle7ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(txt_booktitle7, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, 210, 30));
+
+        jLabel38.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel38.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel38.setText("Section");
+        jPanel4.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, 31));
+
+        txt_booktitle5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle5.setSelectionStart(2);
+        txt_booktitle5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle5ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(txt_booktitle5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 210, 30));
+
+        jLabel39.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel39.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel39.setText("Member Name");
+        jPanel4.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, 31));
+
+        jLabel41.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel41.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel41.setText("Member ID");
+        jPanel4.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, 31));
+
+        jLabel42.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel42.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel42.setText("Member Type");
+        jPanel4.add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, 31));
+
+        jLabel43.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel43.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel43.setText("Strand");
+        jPanel4.add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, -1, 31));
+
+        txt_booktitle8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle8.setSelectionStart(2);
+        txt_booktitle8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle8ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(txt_booktitle8, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 210, 30));
+
+        txt_booktitle9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle9.setSelectionStart(2);
+        txt_booktitle9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle9ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(txt_booktitle9, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 210, 210, 30));
+
+        bookTransactionCardLayout.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, 370, 330));
+
+        jPanel9.setBackground(new java.awt.Color(51, 204, 255));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txt_booktitle1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle1.setSelectionStart(2);
+        txt_booktitle1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle1ActionPerformed(evt);
+            }
+        });
+        jPanel9.add(txt_booktitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 210, 30));
+
+        txt_booktitle2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle2.setSelectionStart(2);
+        txt_booktitle2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle2ActionPerformed(evt);
+            }
+        });
+        jPanel9.add(txt_booktitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, 210, 30));
+
+        txt_booktitle3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle3.setSelectionStart(2);
+        txt_booktitle3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle3ActionPerformed(evt);
+            }
+        });
+        jPanel9.add(txt_booktitle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, 210, 30));
+
+        jLabel34.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel34.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel34.setText("Book Title");
+        jPanel9.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, 31));
+
+        jLabel33.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel33.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel33.setText("Book ID");
+        jPanel9.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, 31));
+
+        jLabel35.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel35.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel35.setText("Category");
+        jPanel9.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, 31));
+
+        bookTransactionCardLayout.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 22, 360, 330));
+
+        jLabel36.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel36.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel36.setText("Book Title");
+        bookTransactionCardLayout.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 30, -1, 31));
+
+        txt_booktitle4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle4.setSelectionStart(2);
+        txt_booktitle4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle4ActionPerformed(evt);
+            }
+        });
+        bookTransactionCardLayout.add(txt_booktitle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 30, 210, 30));
+
+        jLabel13.setText("BOOK DETAILS");
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel13)
+                .addContainerGap(295, Short.MAX_VALUE))
         );
-        bookTransactionCardLayoutLayout.setVerticalGroup(
-            bookTransactionCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
+                .addGap(0, 4, Short.MAX_VALUE)
+                .addComponent(jLabel13))
         );
+
+        bookTransactionCardLayout.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 20));
+
+        jLabel37.setText("STUDENT DETAILS");
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel37)
+                .addContainerGap(277, Short.MAX_VALUE))
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
+                .addGap(0, 4, Short.MAX_VALUE)
+                .addComponent(jLabel37))
+        );
+
+        bookTransactionCardLayout.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 380, -1));
+
+        jLabel44.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel44.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel44.setText("Student Name");
+        bookTransactionCardLayout.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 120, -1, 31));
+
+        txt_booktitle10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle10.setSelectionStart(2);
+        txt_booktitle10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle10ActionPerformed(evt);
+            }
+        });
+        bookTransactionCardLayout.add(txt_booktitle10, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 120, 210, 30));
+
+        crud_tableDataOfBooks1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Book ID", "Book Title", "Category", "Mmeber Name", "Member ID", "Type", "Strand", "Section"
+            }
+        ));
+        crud_tableDataOfBooks1.setColorBackgoundHead(new java.awt.Color(241, 184, 20));
+        crud_tableDataOfBooks1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                crud_tableDataOfBooks1MouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(crud_tableDataOfBooks1);
+
+        bookTransactionCardLayout.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 740, 350));
+
+        jLabel45.setBackground(new java.awt.Color(241, 184, 20));
+        jLabel45.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        jLabel45.setText("Student ID");
+        bookTransactionCardLayout.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 450, -1, 31));
+
+        txt_booktitle11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_booktitle11.setSelectionStart(2);
+        txt_booktitle11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_booktitle11ActionPerformed(evt);
+            }
+        });
+        bookTransactionCardLayout.add(txt_booktitle11, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 450, 210, 30));
+
+        jLabel46.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel46.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel46.setText("Returned Books");
+        bookTransactionCardLayout.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 370, 130, 40));
+
+        jButton2.setText("Clear");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        bookTransactionCardLayout.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 600, 90, 40));
+
+        jButton3.setText("Search");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        bookTransactionCardLayout.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 520, 90, 40));
+
+        jButton4.setText("Delete");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        bookTransactionCardLayout.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 520, 90, 40));
+
+        jSeparator2.setBackground(new java.awt.Color(0, 0, 0));
+        jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
+        bookTransactionCardLayout.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 350, 370, -1));
 
         Parent.add(bookTransactionCardLayout, "card4");
 
-        javax.swing.GroupLayout memberMaintenanceCardLayoutLayout = new javax.swing.GroupLayout(memberMaintenanceCardLayout);
-        memberMaintenanceCardLayout.setLayout(memberMaintenanceCardLayoutLayout);
-        memberMaintenanceCardLayoutLayout.setHorizontalGroup(
-            memberMaintenanceCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1120, Short.MAX_VALUE)
-        );
-        memberMaintenanceCardLayoutLayout.setVerticalGroup(
-            memberMaintenanceCardLayoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
-        );
+        memberMaintenanceCardLayout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        crud_tableDataOfmembers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Member ID", "First Name", "Middle Name", "Last Name", "Section", "School Year", "Contact", "Gender", "Member Type", "Grade Level", "Strand"
+            }
+        ));
+        crud_tableDataOfmembers.setColorBackgoundHead(new java.awt.Color(241, 184, 20));
+        crud_tableDataOfmembers.setFuenteFilas(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        crud_tableDataOfmembers.setFuenteFilasSelect(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        crud_tableDataOfmembers.setFuenteHead(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        crud_tableDataOfmembers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                crud_tableDataOfmembersMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(crud_tableDataOfmembers);
+
+        memberMaintenanceCardLayout.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 1090, 430));
+
+        firstname_label.setBackground(new java.awt.Color(241, 184, 20));
+        firstname_label.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        firstname_label.setText("First Name");
+        memberMaintenanceCardLayout.add(firstname_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 31));
+
+        txt_Memberfirstname.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_Memberfirstname.setSelectionStart(2);
+        txt_Memberfirstname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_MemberfirstnameActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(txt_Memberfirstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 190, 20));
+
+        middlename_label.setBackground(new java.awt.Color(241, 184, 20));
+        middlename_label.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        middlename_label.setText("Middle Name");
+        memberMaintenanceCardLayout.add(middlename_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, -1, 30));
+
+        txt_Membermiddlename.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_Membermiddlename.setSelectionStart(2);
+        txt_Membermiddlename.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_MembermiddlenameActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(txt_Membermiddlename, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 190, 20));
+
+        lastname_label.setBackground(new java.awt.Color(241, 184, 20));
+        lastname_label.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        lastname_label.setText("Last Name");
+        memberMaintenanceCardLayout.add(lastname_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, -1, 30));
+
+        txt_Memberlastname.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_Memberlastname.setSelectionStart(2);
+        txt_Memberlastname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_MemberlastnameActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(txt_Memberlastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 40, 190, 20));
+
+        jComboBox_Membergender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        jComboBox_Membergender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_MembergenderActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(jComboBox_Membergender, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 180, -1));
+
+        membertype_label.setBackground(new java.awt.Color(241, 184, 20));
+        membertype_label.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
+        membertype_label.setText("Member Type");
+        memberMaintenanceCardLayout.add(membertype_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 130, -1, 31));
+
+        jComboBox_strand.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "           ", "ABM", "HUMSS", "ICT", "STEM" }));
+        jComboBox_strand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_strandActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(jComboBox_strand, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 160, 190, -1));
+
+        gradelevel_label.setBackground(new java.awt.Color(241, 184, 20));
+        gradelevel_label.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
+        gradelevel_label.setText("Grade Level");
+        memberMaintenanceCardLayout.add(gradelevel_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 130, -1, 30));
+
+        sectionstrand_label.setBackground(new java.awt.Color(241, 184, 20));
+        sectionstrand_label.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
+        sectionstrand_label.setText("Strand *");
+        memberMaintenanceCardLayout.add(sectionstrand_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 130, -1, 30));
+
+        contact_label.setBackground(new java.awt.Color(241, 184, 20));
+        contact_label.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        contact_label.setText("Contact");
+        memberMaintenanceCardLayout.add(contact_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 60, 30));
+
+        txt_Membercontact.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_Membercontact.setSelectionStart(2);
+        txt_Membercontact.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_MembercontactActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(txt_Membercontact, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 190, 20));
+
+        schoolyear_label.setBackground(new java.awt.Color(241, 184, 20));
+        schoolyear_label.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        schoolyear_label.setText("Section");
+        memberMaintenanceCardLayout.add(schoolyear_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, 30));
+
+        txt_Membersection.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_Membersection.setSelectionStart(2);
+        txt_Membersection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_MembersectionActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(txt_Membersection, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 190, 20));
+
+        schoolyear_label1.setBackground(new java.awt.Color(241, 184, 20));
+        schoolyear_label1.setFont(new java.awt.Font("Nirmala UI", 0, 16)); // NOI18N
+        schoolyear_label1.setText("School Year");
+        memberMaintenanceCardLayout.add(schoolyear_label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, -1, 30));
+
+        jComboBox_gradelevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "7", "8", "9", "10", "11", "12" }));
+        jComboBox_gradelevel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_gradelevelActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(jComboBox_gradelevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 160, 190, -1));
+
+        jComboBox_membertype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Faculty", "Staff" }));
+        jComboBox_membertype.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_membertypeActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(jComboBox_membertype, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, 190, -1));
+
+        gender_label2.setBackground(new java.awt.Color(241, 184, 20));
+        gender_label2.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
+        gender_label2.setText("Gender");
+        memberMaintenanceCardLayout.add(gender_label2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 60, 30));
+
+        try {
+            formattedtxt_schoolyear.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        memberMaintenanceCardLayout.add(formattedtxt_schoolyear, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 100, 190, -1));
+
+        crud_MemberAdd.setBackground(new java.awt.Color(0, 0, 144));
+        crud_MemberAdd.setText("add");
+        crud_MemberAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_MemberAddActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(crud_MemberAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 180, 40));
+
+        crud_MemberupdateBtn.setBackground(new java.awt.Color(0, 0, 144));
+        crud_MemberupdateBtn.setText("UPDATE");
+        crud_MemberupdateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_MemberupdateBtnActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(crud_MemberupdateBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, 180, 40));
+
+        crud_MemberdeleteBtn.setBackground(new java.awt.Color(0, 0, 144));
+        crud_MemberdeleteBtn.setText("DELETE");
+        crud_MemberdeleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_MemberdeleteBtnActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(crud_MemberdeleteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 200, 170, 40));
+
+        crud_MemberclearBtn.setBackground(new java.awt.Color(0, 0, 144));
+        crud_MemberclearBtn.setText("CLEAR");
+        crud_MemberclearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_MemberclearBtnActionPerformed(evt);
+            }
+        });
+        memberMaintenanceCardLayout.add(crud_MemberclearBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 200, 200, 40));
 
         Parent.add(memberMaintenanceCardLayout, "card5");
 
@@ -903,12 +1460,12 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     private void crud_addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_addBtnActionPerformed
         // Display the current book data in the JTable
         showBookDataToTable();
-        
+
         // SQL statement to get the maximum book ID from the book_details table
         String getMaxId = "SELECT MAX(book_id) FROM book_details";
         // SQL statement to insert book data into the book_details table
         String insertData = "INSERT INTO book_details (book_id, book_title, author, publisher, category, quantity, status) VALUES (?,?,?,?,?,?,?)";
-        
+
         // Get a connection to the database
         con = Connectionz.getConnection();
 
@@ -932,7 +1489,7 @@ public class LibrarianDashboard extends javax.swing.JFrame {
                 ResultSet rs = pst.executeQuery();
                 int maxId = rs.next() ? rs.getInt(1) : 0; // If there are no existing book IDs, use the default value of 0 as the maximum
                 int newId = maxId + 1;
-                
+
                 // Insert the book data into the book_details table
                 pst = con.prepareStatement(insertData);
                 pst.setInt(1, newId);
@@ -969,16 +1526,16 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         con = Connectionz.getConnection();
 
         try {
-             // Check if all necessary fields are filled
+            // Check if all necessary fields are filled
             if (txt_booktitle.getText().isEmpty() || txt_author.getText().isEmpty() || txt_publisher.getText().isEmpty() || txt_category.getText().isEmpty() || txt_quantity.getText().isEmpty() || jComboBox_statusBook.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(this, "Please select a row first", "Error Message", JOptionPane.ERROR_MESSAGE);
             } else {
-                 // Check if quantity is a number
+                // Check if quantity is a number
                 String quantityStr = txt_quantity.getText().trim();
                 if (!quantityStr.matches("\\d+")) {
                     JOptionPane.showMessageDialog(this, "Quantity must be a number", "Error Message", JOptionPane.ERROR_MESSAGE);
                 } else {
-                     // Confirm with user if they want to update data
+                    // Confirm with user if they want to update data
                     int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to UPDATE? ", "Confirmation Message", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                     if (option == JOptionPane.YES_OPTION) {
@@ -1056,16 +1613,16 @@ public class LibrarianDashboard extends javax.swing.JFrame {
             e.printStackTrace();
         } finally {
             // This block of code is executed regardless of whether an exception was thrown or not.
-             // It is used to ensure that database resources (in this case, the PreparedStatement and Connection objects) are properly closed.
+            // It is used to ensure that database resources (in this case, the PreparedStatement and Connection objects) are properly closed.
             try {
-                 // Check if the PreparedStatement object is not null
+                // Check if the PreparedStatement object is not null
                 if (pst != null) {
                     // If it's not null, close it to release any database resources it may be holding
                     pst.close();
                 }
                 // Check if the Connection object is not null
                 if (con != null) {
-                     // If it's not null, close it to release any database resources it may be holding
+                    // If it's not null, close it to release any database resources it may be holding
                     con.close();
                 }
             } catch (SQLException ex) {
@@ -1073,6 +1630,313 @@ public class LibrarianDashboard extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_crud_deleteBtnActionPerformed
+   
+    private void crud_tableDataOfmembersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crud_tableDataOfmembersMouseClicked
+        DefaultTableModel model = (DefaultTableModel) crud_tableDataOfmembers.getModel();
+        int index = crud_tableDataOfmembers.getSelectedRow();
+
+        // Get the ID of the selected book
+        idN = Integer.valueOf(model.getValueAt(index, 0).toString());
+
+        txt_Memberfirstname.setText(model.getValueAt(index, 1).toString());
+        txt_Membermiddlename.setText(model.getValueAt(index, 2).toString());
+        txt_Memberlastname.setText(model.getValueAt(index, 3).toString());
+        txt_Membersection.setText(model.getValueAt(index, 4).toString());
+        formattedtxt_schoolyear.setText(model.getValueAt(index, 5).toString());
+        txt_Membercontact.setText(model.getValueAt(index, 6).toString());
+        jComboBox_Membergender.setSelectedItem(model.getValueAt(index, 7).toString());
+        jComboBox_membertype.setSelectedItem(model.getValueAt(index, 8).toString());
+        jComboBox_gradelevel.setSelectedItem(model.getValueAt(index, 9).toString());
+        jComboBox_strand.setSelectedItem(model.getValueAt(index, 10).toString());
+    }//GEN-LAST:event_crud_tableDataOfmembersMouseClicked
+
+    private void txt_MemberfirstnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_MemberfirstnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_MemberfirstnameActionPerformed
+
+    private void txt_MembermiddlenameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_MembermiddlenameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_MembermiddlenameActionPerformed
+
+    private void txt_MemberlastnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_MemberlastnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_MemberlastnameActionPerformed
+
+    private void jComboBox_MembergenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_MembergenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_MembergenderActionPerformed
+
+    private void jComboBox_strandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_strandActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_strandActionPerformed
+
+    private void txt_MembercontactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_MembercontactActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_MembercontactActionPerformed
+
+    private void txt_MembersectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_MembersectionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_MembersectionActionPerformed
+
+    private void jComboBox_gradelevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_gradelevelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_gradelevelActionPerformed
+
+    private void jComboBox_membertypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_membertypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_membertypeActionPerformed
+
+    private void crud_MemberAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_MemberAddActionPerformed
+        // Display the current book data in the JTable
+        showMemberDataToTable();
+
+        // SQL statement to get the maximum book ID from the book_daetails table
+        String getMaxId = "SELECT MAX(member_id) FROM memberinfo_table";
+        // SQL statement to insert book data into the book_details table
+        String insertData = "INSERT INTO memberinfo_table (member_id,first_name,middle_name,last_name,section,school_year,contact,gender,member_type,grade_level,strand) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+
+        // Get a connection to the database
+        con = Connectionz.getConnection();
+
+        try {
+            // Check if all necessary fields have been filled out, otherwise show an error message
+            if (txt_Memberfirstname.getText().isEmpty() || txt_Membermiddlename.getText().isEmpty() || txt_Memberlastname.getText().isEmpty() || txt_Membersection.getText().isEmpty() || formattedtxt_schoolyear.getText().isEmpty() || jComboBox_Membergender.getSelectedItem() == null || jComboBox_membertype.getSelectedItem() == null || jComboBox_gradelevel.getSelectedItem() == null || jComboBox_strand.getSelectedItem() == null) {
+                if (!txt_Memberfirstname.hasFocus() || !txt_Membermiddlename.hasFocus() || !txt_Memberlastname.hasFocus() || !txt_Membersection.hasFocus() || !formattedtxt_schoolyear.hasFocus() || !jComboBox_Membergender.hasFocus() || !jComboBox_membertype.hasFocus() || !jComboBox_gradelevel.hasFocus() || !jComboBox_strand.hasFocus()) {
+                    JOptionPane.showMessageDialog(this, "Please fill out all necessary information", "Error Message", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                // Validate if the input for school year is a number
+                try {
+                    String schoolyearString = formattedtxt_schoolyear.getText();
+                    String[] schoolyearArray = schoolyearString.split("-");
+
+                    if (schoolyearArray.length != 2) {
+                        throw new NumberFormatException();
+                    }
+
+                    int schoolyearStart = Integer.parseInt(schoolyearArray[0]);
+                    int schoolyearEnd = Integer.parseInt(schoolyearArray[1]);
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "School Year must be in the format YYYY-YYYY and must be a number", "Error Message", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                // Get the maximum book ID from the database and increment it by 1 to generate a new, unique ID for the book being added
+                pst = con.prepareStatement(getMaxId);
+                ResultSet rs = pst.executeQuery();
+                int maxId = rs.next() ? rs.getInt(1) : 0; // If there are no existing book IDs, use the default value of 0 as the maximum
+                int newId = maxId + 1;
+
+                // Insert the book data into the book_details table
+                pst = con.prepareStatement(insertData);
+                pst.setInt(1, newId);
+
+                pst.setString(2, txt_Memberfirstname.getText());
+                pst.setString(3, txt_Membermiddlename.getText());
+                pst.setString(4, txt_Memberlastname.getText());
+                pst.setString(5, txt_Membersection.getText());
+                pst.setString(6, formattedtxt_schoolyear.getText());
+                pst.setString(7, txt_Membercontact.getText());
+                pst.setString(8, (String) jComboBox_Membergender.getSelectedItem());
+                pst.setString(9, (String) jComboBox_membertype.getSelectedItem());
+                pst.setString(10, (String) jComboBox_gradelevel.getSelectedItem());
+                pst.setString(11, (String) jComboBox_strand.getSelectedItem());
+
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Successfully Added", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+
+                // Update the JTable to show the newly added book data
+                showMemberDataToTable();
+
+                // CLEAR FIELDS
+                clearFields();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_crud_MemberAddActionPerformed
+
+    private void crud_MemberupdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_MemberupdateBtnActionPerformed
+        // When the Update button is clicked, prepare the SQL statement with the new data
+        String updateData = "UPDATE memberinfo_table SET first_name='"
+                + txt_Memberfirstname.getText() + "', middle_name='"
+                + txt_Membermiddlename.getText() + "', last_name='"
+                + txt_Memberlastname.getText() + "', section='"
+                + txt_Membersection.getText() + "', school_year='"
+                + formattedtxt_schoolyear.getText() + "', contact='"
+                + txt_Membercontact.getText() + "', gender='"
+                + jComboBox_Membergender.getSelectedIndex()+ "' member_type="
+                + jComboBox_membertype.getSelectedItem() + "' grade_level="
+                + jComboBox_gradelevel.getSelectedItem() + "' strand="
+                + jComboBox_strand.getSelectedItem() + "' WHERE member_id=" + idN;
+                
+
+        con = Connectionz.getConnection();
+
+        try {
+            // Check if all necessary fields are filled
+            if (txt_Memberfirstname.getText().isEmpty() || txt_Membermiddlename.getText().isEmpty() || txt_Memberlastname.getText().isEmpty() || txt_Membersection.getText().isEmpty() || formattedtxt_schoolyear.getText().isEmpty() || jComboBox_Membergender.getSelectedItem() == null || jComboBox_membertype.getSelectedItem() == null || jComboBox_gradelevel.getSelectedItem() == null || jComboBox_strand.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(this, "Please select a row first", "Error Message", JOptionPane.ERROR_MESSAGE);
+            } else {
+                // Check if contact is a number
+                String txt_Membercontact = txt_Membercontact.getText().trim();
+                if (!txt_Membercontact.matches("\\d+")) {
+                    JOptionPane.showMessageDialog(this, "Quantity must be a number", "Error Message", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    // Confirm with user if they want to update data
+                    int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to UPDATE? ", "Confirmation Message", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                    if (option == JOptionPane.YES_OPTION) {
+                        pst = con.prepareStatement(updateData);
+                        pst.executeUpdate();
+
+                        JOptionPane.showMessageDialog(this, "Successfully Added", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+
+                        //TO SHOW UPDATED DATA
+                        showBookDataToTable();
+
+                        //CLEAR FIELDS
+                        clearFields();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Cancelled update!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_crud_MemberupdateBtnActionPerformed
+
+    private void crud_MemberdeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_MemberdeleteBtnActionPerformed
+        // SQL command to delete the book data with the corresponding id number
+        String deleteData = "DELETE FROM memberinfo_table WHERE member_id=" + String.valueOf(idN);
+        // SQL command to update the book id numbers for the remaining records
+        String updateIds = "UPDATE memberinfo_table SET member_id = member_id - 1 WHERE member_id > ?";
+
+        try {
+            if(txt_Memberfirstname.getText().isEmpty() || txt_Membermiddlename.getText().isEmpty() || txt_Memberlastname.getText().isEmpty() || txt_Membersection.getText().isEmpty() || formattedtxt_schoolyear.getText().isEmpty() || jComboBox_Membergender.getSelectedItem() == null || jComboBox_membertype.getSelectedItem() == null || jComboBox_gradelevel.getSelectedItem() == null || jComboBox_strand.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(this, "Please select a row first", "Error Message", JOptionPane.ERROR_MESSAGE);
+            } else {
+                int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to DELETE? ", "Confirmation Message", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                if (option == JOptionPane.YES_OPTION) {
+                    con = Connectionz.getConnection();
+                    pst = con.prepareStatement(deleteData);
+                    pst.executeUpdate();
+                    pst.close();
+
+                    pst = con.prepareStatement(updateIds);
+                    pst.setInt(1, idN);
+                    pst.executeUpdate();
+                    pst.close();
+
+                    JOptionPane.showMessageDialog(this, "Successfully Deleted", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+
+                    //TO SHOW UPDATED DATA
+                    showBookDataToTable();
+
+                    //CLEAR FIELDS
+                    clearFields();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Cancelled deletion!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // This block of code is executed regardless of whether an exception was thrown or not.
+            // It is used to ensure that database resources (in this case, the PreparedStatement and Connection objects) are properly closed.
+            try {
+                // Check if the PreparedStatement object is not null
+                if (pst != null) {
+                    // If it's not null, close it to release any database resources it may be holding
+                    pst.close();
+                }
+                // Check if the Connection object is not null
+                if (con != null) {
+                    // If it's not null, close it to release any database resources it may be holding
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_crud_MemberdeleteBtnActionPerformed
+
+    private void crud_MemberclearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_MemberclearBtnActionPerformed
+        clearFieldsForMember();
+    }//GEN-LAST:event_crud_MemberclearBtnActionPerformed
+
+    private void txt_booktitle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle1ActionPerformed
+
+    private void txt_booktitle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle2ActionPerformed
+
+    private void txt_booktitle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle3ActionPerformed
+
+    private void txt_booktitle4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle4ActionPerformed
+
+    private void txt_booktitle5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle5ActionPerformed
+
+    private void txt_booktitle6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle6ActionPerformed
+
+    private void txt_booktitle7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle7ActionPerformed
+
+    private void txt_booktitle8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle8ActionPerformed
+
+    private void txt_booktitle9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle9ActionPerformed
+
+    private void txt_booktitle10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle10ActionPerformed
+
+    private void crud_tableDataOfBooks1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crud_tableDataOfBooks1MouseClicked
+        DefaultTableModel model = (DefaultTableModel) crud_tableDataOfBooks.getModel();
+        int index = crud_tableDataOfBooks.getSelectedRow();
+
+        // Get the ID of the selected book
+        idN = Integer.valueOf(model.getValueAt(index, 0).toString());
+
+        txt_booktitle.setText(model.getValueAt(index, 1).toString());
+        txt_author.setText(model.getValueAt(index, 2).toString());
+        txt_publisher.setText(model.getValueAt(index, 3).toString());
+        txt_category.setText(model.getValueAt(index, 4).toString());
+        txt_quantity.setText(model.getValueAt(index, 5).toString());
+        jComboBox_statusBook.setSelectedItem(model.getValueAt(index, 6).toString());
+    }//GEN-LAST:event_crud_tableDataOfBooks1MouseClicked
+
+    private void txt_booktitle11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_booktitle11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_booktitle11ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public void clearFields() {
         txt_booktitle.setText("");
@@ -1081,6 +1945,19 @@ public class LibrarianDashboard extends javax.swing.JFrame {
         txt_category.setText("");
         txt_quantity.setText("");
         jComboBox_statusBook.setSelectedItem(null);
+
+    }
+    public void clearFieldsForMember() {
+        txt_Memberfirstname.setText("");
+        txt_Membermiddlename.setText("");
+        txt_Memberlastname.setText("");
+        txt_Membersection.setText("");
+        txt_Membercontact.setText("");
+        formattedtxt_schoolyear.setText("");
+        jComboBox_Membergender.setSelectedItem(null);
+        jComboBox_membertype.setSelectedItem(null);
+        jComboBox_gradelevel.setSelectedItem(null);
+        jComboBox_strand.setSelectedItem(null);
 
     }
 
@@ -1124,18 +2001,37 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Parent;
     private javax.swing.JPanel bookMaintenanceCardLayout;
     private javax.swing.JPanel bookTransactionCardLayout;
+    private javax.swing.JLabel contact_label;
+    private rojerusan.RSMaterialButtonRectangle crud_MemberAdd;
+    private rojerusan.RSMaterialButtonRectangle crud_MemberclearBtn;
+    private rojerusan.RSMaterialButtonRectangle crud_MemberdeleteBtn;
+    private rojerusan.RSMaterialButtonRectangle crud_MemberupdateBtn;
     private rojerusan.RSMaterialButtonRectangle crud_addBtn;
     private rojerusan.RSMaterialButtonRectangle crud_clearBtn;
     private rojerusan.RSMaterialButtonRectangle crud_deleteBtn;
     private rojerusan.RSTableMetro crud_tableDataOfBooks;
+    private rojerusan.RSTableMetro crud_tableDataOfBooks1;
+    private rojerusan.RSTableMetro crud_tableDataOfmembers;
     private rojerusan.RSMaterialButtonRectangle crud_updateBtn;
     private javax.swing.JPanel dashboardCardLayout;
+    private javax.swing.JLabel firstname_label;
+    private javax.swing.JFormattedTextField formattedtxt_schoolyear;
+    private javax.swing.JLabel gender_label2;
+    private javax.swing.JLabel gradelevel_label;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JComboBox<String> jComboBox_Membergender;
+    private javax.swing.JComboBox<String> jComboBox_gradelevel;
+    private javax.swing.JComboBox<String> jComboBox_membertype;
     private javax.swing.JComboBox<String> jComboBox_statusBook;
+    private javax.swing.JComboBox<String> jComboBox_strand;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -1157,7 +2053,21 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1172,18 +2082,48 @@ public class LibrarianDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel lastname_label;
     private javax.swing.JPanel listOfIssuedBooksCardLayout;
     private javax.swing.JPanel memberMaintenanceCardLayout;
+    private javax.swing.JLabel membertype_label;
+    private javax.swing.JLabel middlename_label;
+    private rojerusan.RSMetroTextPlaceHolderBeanInfo rSMetroTextPlaceHolderBeanInfo1;
+    private javax.swing.JLabel schoolyear_label;
+    private javax.swing.JLabel schoolyear_label1;
+    private javax.swing.JLabel sectionstrand_label;
+    private javax.swing.JTextField txt_Membercontact;
+    private javax.swing.JTextField txt_Memberfirstname;
+    private javax.swing.JTextField txt_Memberlastname;
+    private javax.swing.JTextField txt_Membermiddlename;
+    private javax.swing.JTextField txt_Membersection;
     private javax.swing.JTextField txt_author;
     private javax.swing.JTextField txt_booktitle;
+    private javax.swing.JTextField txt_booktitle1;
+    private javax.swing.JTextField txt_booktitle10;
+    private javax.swing.JTextField txt_booktitle11;
+    private javax.swing.JTextField txt_booktitle2;
+    private javax.swing.JTextField txt_booktitle3;
+    private javax.swing.JTextField txt_booktitle4;
+    private javax.swing.JTextField txt_booktitle5;
+    private javax.swing.JTextField txt_booktitle6;
+    private javax.swing.JTextField txt_booktitle7;
+    private javax.swing.JTextField txt_booktitle8;
+    private javax.swing.JTextField txt_booktitle9;
     private javax.swing.JTextField txt_category;
     private javax.swing.JTextField txt_publisher;
     private javax.swing.JTextField txt_quantity;
