@@ -33,8 +33,7 @@ public class NewJPanel extends javax.swing.JPanel {
         crud_updateBtn1 = new rojerusan.RSMaterialButtonRectangle();
         crud_deleteBtn1 = new rojerusan.RSMaterialButtonRectangle();
         crud_clearBtn = new rojerusan.RSMaterialButtonRectangle();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        crud_tableDataOfCategories = new rojerusan.RSTableMetro();
+        crud_updateBtn2 = new rojerusan.RSMaterialButtonRectangle();
         jPanel8 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         txt_usernameLibrarian = new javax.swing.JTextField();
@@ -51,6 +50,8 @@ public class NewJPanel extends javax.swing.JPanel {
         crud_tableDataOfLibrarians = new rojerusan.RSTableMetro();
         jLabel21 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        crud_tableDataOfCategories = new rojerusan.RSTableMetro();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -107,25 +108,16 @@ public class NewJPanel extends javax.swing.JPanel {
         });
         jPanel9.add(crud_clearBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 130, 50));
 
-        crud_tableDataOfCategories.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "Category Name"
-            }
-        ));
-        crud_tableDataOfCategories.setColorBackgoundHead(new java.awt.Color(241, 184, 20));
-        crud_tableDataOfCategories.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                crud_tableDataOfCategoriesMouseClicked(evt);
+        crud_updateBtn2.setBackground(new java.awt.Color(0, 0, 144));
+        crud_updateBtn2.setText("UPDATE");
+        crud_updateBtn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_updateBtn2ActionPerformed(evt);
             }
         });
-        jScrollPane3.setViewportView(crud_tableDataOfCategories);
+        jPanel9.add(crud_updateBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, 160, 60));
 
-        jPanel9.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 0, 740, 440));
-
-        add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, -1, -1));
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -214,6 +206,24 @@ public class NewJPanel extends javax.swing.JPanel {
         jPanel8.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 310, -1));
 
         add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 400, 360, 470));
+
+        crud_tableDataOfCategories.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Category Name"
+            }
+        ));
+        crud_tableDataOfCategories.setColorBackgoundHead(new java.awt.Color(241, 184, 20));
+        crud_tableDataOfCategories.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                crud_tableDataOfCategoriesMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(crud_tableDataOfCategories);
+
+        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 110, 740, 440));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txt_usernameLibrarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usernameLibrarianActionPerformed
@@ -338,6 +348,52 @@ public class NewJPanel extends javax.swing.JPanel {
         clearFields();
     }//GEN-LAST:event_crud_clearBtnActionPerformed
 
+    private void crud_updateBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_updateBtn2ActionPerformed
+        // When the Update button is clicked, prepare the SQL statement with the new data
+        String updateData = "UPDATE book_details SET book_title='"
+        + txt_booktitle.getText() + "', author='"
+        + txt_author.getText() + "', publisher='"
+        + txt_publisher.getText() + "', category='"
+        + txt_category.getText() + "', quantity='"
+        + txt_quantity.getInt() + "', status='"
+        + jComboBox_statusBook.getSelectedItem() + "' WHERE book_id=" + idN;
+
+        con = Connectionz.getConnection();
+
+        try {
+            // Check if all necessary fields are filled
+            if (txt_booktitle.getText().isEmpty() || txt_author.getText().isEmpty() || txt_publisher.getText().isEmpty() || txt_category.getText().isEmpty() || txt_quantity.getText().isEmpty() || jComboBox_statusBook.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(this, "Please select a row first", "Error Message", JOptionPane.ERROR_MESSAGE);
+            } else {
+                // Check if quantity is a number
+                String quantityStr = txt_quantity.getText().trim();
+                if (!quantityStr.matches("\\d+")) {
+                    JOptionPane.showMessageDialog(this, "Quantity must be a number", "Error Message", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    // Confirm with user if they want to update data
+                    int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to UPDATE? ", "Confirmation Message", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                    if (option == JOptionPane.YES_OPTION) {
+                        pst = con.prepareStatement(updateData);
+                        pst.executeUpdate();
+
+                        JOptionPane.showMessageDialog(this, "Successfully Added", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+
+                        //TO SHOW UPDATED DATA
+                        showBookDataToTable();
+
+                        //CLEAR FIELDS
+                        clearFields();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Cancelled update!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_crud_updateBtn2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojerusan.RSMaterialButtonRectangle crud_addBtn;
@@ -349,6 +405,7 @@ public class NewJPanel extends javax.swing.JPanel {
     private rojerusan.RSTableMetro crud_tableDataOfLibrarians;
     private rojerusan.RSMaterialButtonRectangle crud_updateBtn;
     private rojerusan.RSMaterialButtonRectangle crud_updateBtn1;
+    private rojerusan.RSMaterialButtonRectangle crud_updateBtn2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel15;

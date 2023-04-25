@@ -4,12 +4,18 @@
  */
 package library.management.newn;
 
-
+import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,7 +36,9 @@ public class AdminPanel extends javax.swing.JFrame {
     DefaultTableModel model;
 
     public AdminPanel() {
+
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         showData();
     }
 
@@ -38,36 +46,38 @@ public class AdminPanel extends javax.swing.JFrame {
 
         String id = null;
         String Username = null;
+        String Password = null;
         String Contact = null;
         String Gender = null;
         String Date = null;
-        
-         // SQL Select statement to get all data from librarianlogin_table
+
+        // SQL Select statement to get all data from librarianlogin_table
         String selectData = "SELECT * FROM librarianlogin_table";
-        
+
         // Creating a table model with rows that will be displayed on the CRUD table of librarians information 
         DefaultTableModel model = (DefaultTableModel) crud_tableDataOfLibrarians.getModel();
-         // Clearing all rows before getting new ones from library login table.
+        // Clearing all rows before getting new ones from library login table.
         model.setRowCount(0);
 
         try {
-             // Establishing connection with MySQL Database 
+            // Establishing connection with MySQL Database 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/compulibsys", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3307/computerizedlibrarysys", "root", "");
             pst = con.prepareStatement(selectData);
             rs = pst.executeQuery();
-            
+
             // Looping through each row of the result set and retrieving data for id, username, contact, gender and date
             while (rs.next()) {
 
                 id = rs.getString("id");
                 Username = rs.getString("username");
+                Password = rs.getString("password");
                 Contact = rs.getString("contact");
                 Gender = rs.getString("gender");
                 Date = rs.getString("date");
-                
-                 // Adding retrieved rows to the table model 
-                String rows[] = {id, Username, Contact, Gender, Date};
+
+                // Adding retrieved rows to the table model 
+                String rows[] = {id, Username, Password, Contact, Gender, Date};
                 model.addRow(rows);
 
             }
@@ -80,6 +90,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
     public AdminPanel(String username) {
         initComponents();
+
         AdminNameDisplay.setText(username);
 
     }
@@ -103,29 +114,29 @@ public class AdminPanel extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         Parent = new javax.swing.JPanel();
         manageLibrarianCardLayout = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         txt_ContactLibrarian = new javax.swing.JTextField();
         usernameAdminlabel1 = new javax.swing.JLabel();
         PasswordAdminlabel = new javax.swing.JLabel();
         contactNumberAdminlabel3 = new javax.swing.JLabel();
-        txt_passwordLibrarian = new javax.swing.JPasswordField();
-        showhidepass_librarians = new javax.swing.JCheckBox();
-        txt_usernameLibrarian = new javax.swing.JTextField();
+        txt_passwordLibrarian = new javax.swing.JTextField();
         crud_deleteBtn = new rojerusan.RSMaterialButtonRectangle();
         crud_addBtn = new rojerusan.RSMaterialButtonRectangle();
         crud_updateBtn = new rojerusan.RSMaterialButtonRectangle();
         crud_clearBtn = new rojerusan.RSMaterialButtonRectangle();
         contactNumberAdminlabel4 = new javax.swing.JLabel();
         ComboboxGenderLibrarian = new javax.swing.JComboBox<>();
-        jPanel4 = new javax.swing.JPanel();
+        txt_usernameLibrarian = new javax.swing.JTextField();
+        jPanel10 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         crud_tableDataOfLibrarians = new rojerusan.RSTableMetro();
         jPanel3 = new javax.swing.JPanel();
         AdminNameDisplay = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -135,7 +146,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         ManageLibrarianPanel.setBackground(new java.awt.Color(144, 0, 0));
 
-        ManageLibrariantxt.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        ManageLibrariantxt.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         ManageLibrariantxt.setForeground(new java.awt.Color(255, 255, 255));
         ManageLibrariantxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ManageLibrariantxt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/library/management/newn/iconsforAdminSideMenu/icons8-admin-settings-male-26.png"))); // NOI18N
@@ -159,13 +170,18 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jPanel1.add(ManageLibrarianPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 250, 40));
 
+        logoutAdminPanel.setBackground(new java.awt.Color(243, 225, 192));
+        logoutAdminPanel.setFont(new java.awt.Font("Lucida Console", 0, 14)); // NOI18N
+        logoutAdminPanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/library/management/newn/iconsFor-LibrarianModule/icons8-lougut24.png"))); // NOI18N
         logoutAdminPanel.setText("LOG OUT");
+        logoutAdminPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        logoutAdminPanel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         logoutAdminPanel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutAdminPanelActionPerformed(evt);
             }
         });
-        jPanel1.add(logoutAdminPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 110, 40));
+        jPanel1.add(logoutAdminPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 610, 100, 30));
 
         jPanel5.setBackground(new java.awt.Color(144, 0, 0));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -178,7 +194,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/library/management/newn/iconsforAdminSideMenu/icons8-admin-64.png"))); // NOI18N
         jLabel20.setText("Admin");
 
-        jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
+        jSeparator1.setForeground(new java.awt.Color(241, 184, 20));
 
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
         jPanel20.setLayout(jPanel20Layout);
@@ -210,15 +226,22 @@ public class AdminPanel extends javax.swing.JFrame {
 
         manageLibrarianCardLayout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jLabel1.setText("Manage Librarians");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 170, 40));
-        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, 430, 10));
-        jPanel2.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 430, 20));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
+        jLabel4.setText("Manage Librarians");
+        jPanel9.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 170, 40));
+        jPanel9.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, 430, 10));
+        jPanel9.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 430, 20));
+
+        txt_ContactLibrarian.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txt_ContactLibrarian.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txt_ContactLibrarian.setSelectionStart(2);
         txt_ContactLibrarian.addActionListener(new java.awt.event.ActionListener() {
@@ -226,41 +249,83 @@ public class AdminPanel extends javax.swing.JFrame {
                 txt_ContactLibrarianActionPerformed(evt);
             }
         });
-        jPanel2.add(txt_ContactLibrarian, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 190, 330, 30));
+        jPanel9.add(txt_ContactLibrarian, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 182, 330, 30));
 
         usernameAdminlabel1.setBackground(new java.awt.Color(241, 184, 20));
-        usernameAdminlabel1.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
+        usernameAdminlabel1.setFont(new java.awt.Font("Yu Gothic Medium", 0, 16)); // NOI18N
         usernameAdminlabel1.setText("Username");
-        jPanel2.add(usernameAdminlabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, -1, 31));
+        jPanel9.add(usernameAdminlabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, -1, 31));
 
         PasswordAdminlabel.setBackground(new java.awt.Color(241, 184, 20));
-        PasswordAdminlabel.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
+        PasswordAdminlabel.setFont(new java.awt.Font("Yu Gothic Medium", 0, 16)); // NOI18N
         PasswordAdminlabel.setText("Password");
-        jPanel2.add(PasswordAdminlabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, -1, 31));
+        jPanel9.add(PasswordAdminlabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, -1, 31));
 
         contactNumberAdminlabel3.setBackground(new java.awt.Color(241, 184, 20));
-        contactNumberAdminlabel3.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
+        contactNumberAdminlabel3.setFont(new java.awt.Font("Yu Gothic Medium", 0, 16)); // NOI18N
         contactNumberAdminlabel3.setText("Gender");
-        jPanel2.add(contactNumberAdminlabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, -1, 31));
+        jPanel9.add(contactNumberAdminlabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, -1, 40));
 
+        txt_passwordLibrarian.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txt_passwordLibrarian.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txt_passwordLibrarian.setSelectionStart(2);
         txt_passwordLibrarian.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_passwordLibrarianActionPerformed(evt);
             }
         });
-        jPanel2.add(txt_passwordLibrarian, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, 330, 30));
+        jPanel9.add(txt_passwordLibrarian, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 133, 330, 30));
 
-        showhidepass_librarians.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        showhidepass_librarians.setForeground(new java.awt.Color(51, 51, 51));
-        showhidepass_librarians.setText("Show Password");
-        showhidepass_librarians.addActionListener(new java.awt.event.ActionListener() {
+        crud_deleteBtn.setBackground(new java.awt.Color(39, 80, 112));
+        crud_deleteBtn.setText("DELETE");
+        crud_deleteBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        crud_deleteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showhidepass_librariansActionPerformed(evt);
+                crud_deleteBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(showhidepass_librarians, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, -1, -1));
+        jPanel9.add(crud_deleteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 260, 100, 50));
 
+        crud_addBtn.setBackground(new java.awt.Color(39, 80, 112));
+        crud_addBtn.setText("add");
+        crud_addBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        crud_addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_addBtnActionPerformed(evt);
+            }
+        });
+        jPanel9.add(crud_addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 260, 100, 50));
+
+        crud_updateBtn.setBackground(new java.awt.Color(39, 80, 112));
+        crud_updateBtn.setText("UPDATE");
+        crud_updateBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        crud_updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_updateBtnActionPerformed(evt);
+            }
+        });
+        jPanel9.add(crud_updateBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 260, 100, 50));
+
+        crud_clearBtn.setBackground(new java.awt.Color(39, 80, 112));
+        crud_clearBtn.setText("CLEAR");
+        crud_clearBtn.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        crud_clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crud_clearBtnActionPerformed(evt);
+            }
+        });
+        jPanel9.add(crud_clearBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 260, 100, 50));
+
+        contactNumberAdminlabel4.setBackground(new java.awt.Color(241, 184, 20));
+        contactNumberAdminlabel4.setFont(new java.awt.Font("Yu Gothic Medium", 0, 16)); // NOI18N
+        contactNumberAdminlabel4.setText("Contact Number");
+        jPanel9.add(contactNumberAdminlabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, -1, 31));
+
+        ComboboxGenderLibrarian.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        ComboboxGenderLibrarian.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        jPanel9.add(ComboboxGenderLibrarian, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 150, 30));
+
+        txt_usernameLibrarian.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txt_usernameLibrarian.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txt_usernameLibrarian.setSelectionStart(2);
         txt_usernameLibrarian.addActionListener(new java.awt.event.ActionListener() {
@@ -268,78 +333,99 @@ public class AdminPanel extends javax.swing.JFrame {
                 txt_usernameLibrarianActionPerformed(evt);
             }
         });
-        jPanel2.add(txt_usernameLibrarian, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 90, 330, 30));
+        jPanel9.add(txt_usernameLibrarian, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 83, 330, 30));
 
-        crud_deleteBtn.setBackground(new java.awt.Color(0, 0, 144));
-        crud_deleteBtn.setText("DELETE");
-        crud_deleteBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                crud_deleteBtnActionPerformed(evt);
-            }
-        });
-        jPanel2.add(crud_deleteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 250, 100, 50));
+        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1080, 320));
 
-        crud_addBtn.setBackground(new java.awt.Color(0, 0, 144));
-        crud_addBtn.setText("add");
-        crud_addBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                crud_addBtnActionPerformed(evt);
-            }
-        });
-        jPanel2.add(crud_addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 250, 100, 50));
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        crud_updateBtn.setBackground(new java.awt.Color(0, 0, 144));
-        crud_updateBtn.setText("UPDATE");
-        crud_updateBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                crud_updateBtnActionPerformed(evt);
-            }
-        });
-        jPanel2.add(crud_updateBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 250, 100, 50));
-
-        crud_clearBtn.setBackground(new java.awt.Color(0, 0, 144));
-        crud_clearBtn.setText("CLEAR");
-        crud_clearBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                crud_clearBtnActionPerformed(evt);
-            }
-        });
-        jPanel2.add(crud_clearBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 250, 100, 50));
-
-        contactNumberAdminlabel4.setBackground(new java.awt.Color(241, 184, 20));
-        contactNumberAdminlabel4.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
-        contactNumberAdminlabel4.setText("Contact Number");
-        jPanel2.add(contactNumberAdminlabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, -1, 31));
-
-        ComboboxGenderLibrarian.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ComboboxGenderLibrarian.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
-        jPanel2.add(ComboboxGenderLibrarian, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 240, 160, 40));
-
-        manageLibrarianCardLayout.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1100, 310));
-
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
+        crud_tableDataOfLibrarians.setAutoCreateRowSorter(true);
         crud_tableDataOfLibrarians.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Username", "Contact Number", "Gender", "Date Registered"
+                "ID", "Username", "Password", "Contact Number", "Gender", "Date Registered"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        crud_tableDataOfLibrarians.setToolTipText("");
+        crud_tableDataOfLibrarians.setAltoHead(30);
+        crud_tableDataOfLibrarians.setAutoscrolls(true);
         crud_tableDataOfLibrarians.setColorBackgoundHead(new java.awt.Color(241, 184, 20));
-        crud_tableDataOfLibrarians.setFuenteHead(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        crud_tableDataOfLibrarians.setColorBordeFilas(new java.awt.Color(204, 204, 204));
+        crud_tableDataOfLibrarians.setColorBordeHead(new java.awt.Color(255, 255, 255));
+        crud_tableDataOfLibrarians.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
+        crud_tableDataOfLibrarians.setColorFilasForeground1(new java.awt.Color(0, 0, 0));
+        crud_tableDataOfLibrarians.setColorFilasForeground2(new java.awt.Color(0, 0, 0));
+        crud_tableDataOfLibrarians.setColorForegroundHead(new java.awt.Color(0, 0, 0));
+        crud_tableDataOfLibrarians.setColorSelBackgound(new java.awt.Color(79, 126, 171));
+        crud_tableDataOfLibrarians.setFocusable(false);
+        crud_tableDataOfLibrarians.setFuenteFilas(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        crud_tableDataOfLibrarians.setFuenteHead(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        crud_tableDataOfLibrarians.setGrosorBordeFilas(0);
+        crud_tableDataOfLibrarians.setGrosorBordeHead(0);
+        crud_tableDataOfLibrarians.setMinimumSize(new java.awt.Dimension(100, 600));
+        crud_tableDataOfLibrarians.setRequestFocusEnabled(false);
+        crud_tableDataOfLibrarians.setShowGrid(true);
+        crud_tableDataOfLibrarians.getTableHeader().setReorderingAllowed(false);
         crud_tableDataOfLibrarians.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 crud_tableDataOfLibrariansMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(crud_tableDataOfLibrarians);
+        if (crud_tableDataOfLibrarians.getColumnModel().getColumnCount() > 0) {
+            crud_tableDataOfLibrarians.getColumnModel().getColumn(0).setPreferredWidth(20);
+            crud_tableDataOfLibrarians.getColumnModel().getColumn(1).setPreferredWidth(158);
+            crud_tableDataOfLibrarians.getColumnModel().getColumn(2).setPreferredWidth(170);
+            crud_tableDataOfLibrarians.getColumnModel().getColumn(3).setPreferredWidth(130);
+        }
 
-        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 910, 320));
+        jPanel10.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 910, 370));
 
-        manageLibrarianCardLayout.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 1100, 350));
+        jPanel6.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 1080, 410));
+
+        jScrollPane1.setViewportView(jPanel6);
+
+        manageLibrarianCardLayout.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 720));
 
         Parent.add(manageLibrarianCardLayout, "card2");
 
@@ -352,11 +438,6 @@ public class AdminPanel extends javax.swing.JFrame {
         AdminNameDisplay.setForeground(new java.awt.Color(255, 255, 255));
         AdminNameDisplay.setText("    ");
         jPanel3.add(AdminNameDisplay, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 40, 90, 20));
-
-        jLabel22.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel22.setText("Welcome :");
-        jPanel3.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(916, 44, -1, 20));
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, 1120, 70));
 
@@ -387,38 +468,32 @@ public class AdminPanel extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_ContactLibrarianActionPerformed
 
-    private void showhidepass_librariansActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showhidepass_librariansActionPerformed
-        // login button code
-        if (showhidepass_librarians.isSelected()) {
-            txt_passwordLibrarian.setEchoChar((char) 0); //
-        } else {
-            txt_passwordLibrarian.setEchoChar('*');
-        }
-    }//GEN-LAST:event_showhidepass_librariansActionPerformed
-
     private void txt_passwordLibrarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_passwordLibrarianActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_passwordLibrarianActionPerformed
 
-    private void txt_usernameLibrarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usernameLibrarianActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_usernameLibrarianActionPerformed
-
     private void crud_deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_deleteBtnActionPerformed
-        String deleteData = "DELETE FROM librarianlogin_table WHERE id=" + idNumber;
-
+        String deleteData = "DELETE FROM librarianlogin_table WHERE id=" + String.valueOf(idNumber);
+        String updateIds = "UPDATE librarianlogin_table SET id = id - 1 WHERE id > ?";
         con = Connectionz.getConnection();
 
         try {
 
-            if (txt_usernameLibrarian.getText().isEmpty() || txt_ContactLibrarian.getText().isEmpty() || ComboboxGenderLibrarian.getSelectedItem() == null) {
+            if (txt_passwordLibrarian.getText().isEmpty() || txt_ContactLibrarian.getText().isEmpty() || ComboboxGenderLibrarian.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(this, "Please select a row first", "Error Message", JOptionPane.ERROR_MESSAGE);
             } else {
                 int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to DELETE? ", "Confirmation Message", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                 if (option == JOptionPane.YES_OPTION) {
+                    con = Connectionz.getConnection();
                     pst = con.prepareStatement(deleteData);
                     pst.executeUpdate();
+                    pst.close();
+
+                    pst = con.prepareStatement(updateIds);
+                    pst.setInt(1, idNumber);
+                    pst.executeUpdate();
+                    pst.close();
 
                     JOptionPane.showMessageDialog(this, "Successfully Deleted", "Information Message", JOptionPane.INFORMATION_MESSAGE);
 
@@ -433,119 +508,191 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            // This block of code is executed regardless of whether an exception was thrown or not.
+            // It is used to ensure that database resources (in this case, the PreparedStatement and Connection objects) are properly closed.
+            try {
+                // Check if the PreparedStatement object is not null
+                if (pst != null) {
+                    // If it's not null, close it to release any database resources it may be holding
+                    pst.close();
+                }
+                // Check if the Connection object is not null
+                if (con != null) {
+                    // If it's not null, close it to release any database resources it may be holding
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
-
     }//GEN-LAST:event_crud_deleteBtnActionPerformed
 
     private void crud_addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_addBtnActionPerformed
         showData(); // show current data in the table
-        
+        String getMaxId = "SELECT MAX(id) FROM librarianlogin_table";
         // SQL query to insert data into the table
-        String insertData = "INSERT INTO librarianlogin_table (username,password,contact,gender,date,options)" + "VALUES(?,?,?,?,?,?)";
-        
-         // establish a database connection
+        String insertData = "INSERT INTO librarianlogin_table (id,username,password,contact,gender,date,options)" + "VALUES(?,?,?,?,?,?,?)";
+        // SQL query to check if a librarian with the same details already exists
+        String checkDuplicate = "SELECT * FROM librarianlogin_table WHERE username=? AND password=? AND contact=? AND gender=?";
+
+        // establish a database connection
         con = Connectionz.getConnection();
         try {
             // check if all required fields are filled
-            if (txt_usernameLibrarian.getText().isEmpty() || txt_ContactLibrarian.getText().isEmpty() || ComboboxGenderLibrarian.getSelectedItem() == null) {
-                 // show an error message if any required fields are missing
-                if (!txt_usernameLibrarian.hasFocus() && !txt_ContactLibrarian.hasFocus() && !ComboboxGenderLibrarian.hasFocus()) {
+            if (txt_passwordLibrarian.getText().isEmpty() || txt_ContactLibrarian.getText().isEmpty() || ComboboxGenderLibrarian.getSelectedItem() == null) {
+                // show an error message if any required fields are missing
+                if (!txt_passwordLibrarian.hasFocus() && !txt_ContactLibrarian.hasFocus() && !ComboboxGenderLibrarian.hasFocus()) {
                     JOptionPane.showMessageDialog(this, "Please fill out all necessary information", "Error Message", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                // if all required fields are filled, execute the SQL query
-                pst = con.prepareStatement(insertData);
-                
-                // This section of the code sets the values of the parameters for the SQL query 
-                //to insert data into the database table. Each "?" in the SQL query represents a parameter that needs to be set to a specific value.
-                //The pst.setString() method is used to set the value for each parameter.
-                pst.setString(1, txt_usernameLibrarian.getText());
-                pst.setString(2, txt_passwordLibrarian.getText());
-                pst.setString(3, txt_ContactLibrarian.getText());
-                pst.setString(4, (String) ComboboxGenderLibrarian.getSelectedItem());
+                if (!txt_ContactLibrarian.getText().trim().matches("\\d+")) {
+                    JOptionPane.showMessageDialog(this, "Contact Number must not contain a letter", "Error Message", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    // if all required fields are filled, check for duplicate librarian data
+                    pst = con.prepareStatement(checkDuplicate);
+                    pst.setString(1, txt_usernameLibrarian.getText());
+                    pst.setString(2, txt_passwordLibrarian.getText());
+                    pst.setString(3, txt_ContactLibrarian.getText());
+                    pst.setString(4, (String) ComboboxGenderLibrarian.getSelectedItem());
+                    ResultSet rs = pst.executeQuery();
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(this, "A librarian with the same details already exists", "Error Message", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        // if no duplicate is found, execute the SQL query to insert the new librarian data
+                        pst = con.prepareStatement(getMaxId);
+                        rs = pst.executeQuery();
+                        int maxId = rs.next() ? rs.getInt(1) : 0; // If there are no existing book IDs, use the default value of 0 as the maximum
+                        int newId = maxId + 1;
 
-                Date date = new Date();
-                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                        // This section of the code sets the values of the parameters for the SQL query
+                        //to insert data into the database table. Each "?" in the SQL query represents a parameter that needs to be set to a specific value.
+                        //The pst.setString() method is used to set the value for each parameter.
+                        pst = con.prepareStatement(insertData);
+                        pst.setInt(1, newId);
+                        pst.setString(2, txt_usernameLibrarian.getText());
+                        pst.setString(3, txt_passwordLibrarian.getText());
+                        pst.setString(4, txt_ContactLibrarian.getText());
+                        pst.setString(5, (String) ComboboxGenderLibrarian.getSelectedItem());
 
-                pst.setString(5, String.valueOf(sqlDate));
-                pst.setString(6, "Librarian"); // set user_type to "Librarian"
-                pst.executeUpdate();
-                JOptionPane.showMessageDialog(this, "Successfully Added", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                        LocalDateTime now = LocalDateTime.now();
+                        pst.setString(6, dtf.format(now));
 
-                //TO SHOW UPDATED DATA
-                showData();
+                        pst.setString(7, "Librarian"); // set user_type to "Librarian"
+                        pst.executeUpdate();
+                        JOptionPane.showMessageDialog(this, "Successfully Added", "Information Message", JOptionPane.INFORMATION_MESSAGE);
 
-                //CLEAR THE INPUT FIELDS
-                clearFields();
+                        //TO SHOW UPDATED DATA
+                        showData();
+
+                        //CLEAR THE INPUT FIELDS
+                        clearFields();
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_crud_addBtnActionPerformed
 
-
     private void crud_updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_updateBtnActionPerformed
         // This code updates a row in the librarianlogin_table database table with new data entered by the user.
-        // The update query is constructed using the values entered by the user in the text fields and drop-down list. 
+        // The update query is constructed using the values entered by the user in the text fields and drop-down list.
         //The WHERE clause ensures that only the row with the specified idNumber is updated.
-        String updateData = "UPDATE librarianlogin_table SET Username='"
-                + txt_usernameLibrarian.getText() + "', Contact='"
-                + txt_ContactLibrarian.getText() + "', Gender='"
-                + ComboboxGenderLibrarian.getSelectedItem() + "' WHERE id=" + idNumber;
+        String username = txt_usernameLibrarian.getText().trim();
+        String password = txt_passwordLibrarian.getText().trim();
+        String contact = txt_ContactLibrarian.getText().trim();
+        String gender = (String) ComboboxGenderLibrarian.getSelectedItem();
 
+        // Check if any of the required fields are empty
+        if (username.isEmpty() || password.isEmpty() || contact.isEmpty() || gender == null) {
+            JOptionPane.showMessageDialog(this, "Please select a row first", "Error Message", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Check if the data to be updated already exists in the database
+        String query = "SELECT COUNT(*) FROM librarianlogin_table WHERE Username=? AND Password=? AND Contact=? AND Gender=? AND id!=?";
+        
         con = Connectionz.getConnection();
 
-        try {
-            //If any of the required fields are empty, the user is prompted to select a row to update.
-            if (txt_usernameLibrarian.getText().isEmpty() || txt_ContactLibrarian.getText().isEmpty() || ComboboxGenderLibrarian.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(this, "Please select a row first", "Error Message", JOptionPane.ERROR_MESSAGE);
-            } else {
-                // Prompt the user to confirm the update
-                int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to UPDATE? ", "Confirmation Message", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
+        try (PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setString(3, contact);
+            stmt.setString(4, gender);
+            stmt.setInt(5, idNumber);
 
-                if (option == JOptionPane.YES_OPTION) {
-                    pst = con.prepareStatement(updateData);
-                    pst.executeUpdate();
-                       
-                    // Display a success message and update the table with the new data
-                    JOptionPane.showMessageDialog(this, "Successfully Added", "Information Message", JOptionPane.INFORMATION_MESSAGE);
-                    showData();
-
-                    //CLEAR FIELDS
-                    clearFields();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Cancelled update!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
-                }
-
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(this, "The librarian with these details already exists in the database", "Error Message", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "An error occurred while checking for duplicate entries", "Error Message", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        } catch (Exception e) {
+        // Prompt the user to confirm the update
+        int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to UPDATE? ", "Confirmation Message", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (option != JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(this, "Cancelled update!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
+        // Update the database with the new data
+        String updateData = "UPDATE librarianlogin_table SET Username=?, Password=?, Contact=?, Gender=? WHERE id=?";
+        try (PreparedStatement stmt = con.prepareStatement(updateData)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setString(3, contact);
+            stmt.setString(4, gender);
+            stmt.setInt(5, idNumber);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                // Display a success message and update the table with the new data
+                JOptionPane.showMessageDialog(this, "Successfully updated", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+                showData();
+
+                // Clear the fields
+                clearFields();
+            } else {
+                JOptionPane.showMessageDialog(this, "No rows were updated", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "An error occurred while updating the database", "Error Message", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_crud_updateBtnActionPerformed
 
     private void crud_clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crud_clearBtnActionPerformed
         clearFields();
     }//GEN-LAST:event_crud_clearBtnActionPerformed
-    
-    private int idNumber = 0;
+
     private void crud_tableDataOfLibrariansMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crud_tableDataOfLibrariansMouseClicked
         // Store the index of the selected row in the table
         DefaultTableModel model = (DefaultTableModel) crud_tableDataOfLibrarians.getModel();
         int index = crud_tableDataOfLibrarians.getSelectedRow();
-        
+
         // Store the value of the ID column of the selected row as an integer
         idNumber = Integer.valueOf(model.getValueAt(index, 0).toString());
-        
-         // Set the text fields and combo box to the values of the corresponding columns of the selected row
-        txt_usernameLibrarian.setText(model.getValueAt(index, 1).toString());
-        txt_ContactLibrarian.setText(model.getValueAt(index, 2).toString());
-        ComboboxGenderLibrarian.setSelectedItem(model.getValueAt(index, 3).toString());
 
+        // Set the text fields and combo box to the values of the corresponding columns of the selected row
+        txt_usernameLibrarian.setText(model.getValueAt(index, 1).toString());
+        txt_passwordLibrarian.setText(model.getValueAt(index, 2).toString());
+        txt_ContactLibrarian.setText(model.getValueAt(index, 3).toString());
+        ComboboxGenderLibrarian.setSelectedItem(model.getValueAt(index, 4).toString());
     }//GEN-LAST:event_crud_tableDataOfLibrariansMouseClicked
+
+    private void txt_usernameLibrarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usernameLibrarianActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_usernameLibrarianActionPerformed
+
+    private int idNumber = 0;
+
     public void clearFields() {
         // Clear the text fields by setting their text to an empty string
-        txt_usernameLibrarian.setText("");
+        txt_passwordLibrarian.setText("");
         txt_passwordLibrarian.setText("");
         txt_ContactLibrarian.setText("");
         // Reset the selected item in the combo box to null
@@ -556,31 +703,7 @@ public class AdminPanel extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
+        FlatLightLaf.setup();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AdminPanel().setVisible(true);
@@ -602,24 +725,24 @@ public class AdminPanel extends javax.swing.JFrame {
     private rojerusan.RSMaterialButtonRectangle crud_deleteBtn;
     private rojerusan.RSTableMetro crud_tableDataOfLibrarians;
     private rojerusan.RSMaterialButtonRectangle crud_updateBtn;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JButton logoutAdminPanel;
     private javax.swing.JPanel manageLibrarianCardLayout;
-    private javax.swing.JCheckBox showhidepass_librarians;
     private javax.swing.JTextField txt_ContactLibrarian;
-    private javax.swing.JPasswordField txt_passwordLibrarian;
+    private javax.swing.JTextField txt_passwordLibrarian;
     private javax.swing.JTextField txt_usernameLibrarian;
     private javax.swing.JLabel usernameAdminlabel1;
     // End of variables declaration//GEN-END:variables
